@@ -11,4 +11,4 @@ RUN git clone https://github.com/Chia-Network/chia-blockchain.git && cd chia-blo
 
 ADD ./services.py services.py
 
-RUN python services.py -p $plot_dir -k $keys -harv $harvester -f $farmer
+CMD ["./services.py -p $plot_dir -k $keys -harv $harvester -f $farmer"]
