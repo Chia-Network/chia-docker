@@ -14,8 +14,12 @@ echo "Keys: $keys";
 echo "harvester only: $harvester";
 echo "farmer address: $farmeraddress";
 
-if [[ "$harvester" == true ]] then;
+if [[ "$harvester" == "true" ]] then;
+  if [[ ! -z "$farmeraddress" ]] then;
+    
+  else
 
+  fi
 elif [[ ! -z "$var" ]] then;
 
 else
