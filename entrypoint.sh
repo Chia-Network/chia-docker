@@ -5,21 +5,20 @@ cd /chia-blockchain
 chia init
 
 if [[ -z ${keys} ]]; then
-  echo "please set your keys or set the keys variable equal to generate"
+
   exit
-elif [[ ${keys} == "generate" ]]; then
+if [[ ${keys} == "generate" ]]; then
+  echo "to use your own keys pass them as a variable -e keys=\"24words\""
   chia keys generate
 else
   chia keys add -m "${keys}"
 fi
 
-if [[ ! "$(ls -A /plots)" && -z ${plots_dir} ]]; then
+if [[ ! "$(ls -A /plots)" ]]; then
   echo "Plots directory appears to be empty and you have not specified another, try mounting a plot directory with the docker -v command "
-elif [[ ! -z ${plots_dir} ]]; then
-  chia plots add -d ${plots_dir}
-else
-  chia plots add -d /plots
 fi
+
+chia plots add -d ${plots_dir}
 
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only
