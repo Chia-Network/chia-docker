@@ -14,9 +14,11 @@ echo "Keys: $keys";
 echo "harvester only: $harvester";
 echo "farmer address: $farmeraddress";
 
+cd /chia-blockchain && . ./activate && chia init
+
 if [[ "$harvester" == "true" ]] then;
   if [[ ! -z "$farmeraddress" ]] then;
-    
+    cd /chia-blockchain && . ./activate && chia start harvester
   else
 
   fi
