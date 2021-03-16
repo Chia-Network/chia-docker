@@ -4,7 +4,7 @@ Currently latest = head of dev branch, tagged releases to come shortly
 
 ## Initialize
 ```
-docker run (optional --expose=58444 to run a testnet node)--name chia (chia-farmer, chia-harvester1 etc.) -d ghcr.io/chia-network/chia:latest (optional -v /path/to/plots:plots) 
+docker run (optional --expose=58444 to run a testnet node)--name chia (chia-farmer, chia-harvester1 etc.) -d ghcr.io/chia-network/chia:latest (optional -v /path/to/plots:plots)
 ```
 
 ## Config management
@@ -90,7 +90,7 @@ docker exec -it chia venv/bin/chia show -s -c
 
 #### or run the same commands externally with venv
 ```
-docker exec -it chia venv/bin/chia keys generate
+docker exec -it chia venv/bin/chia keys generate OR docker exec -it chia venv/bin/chia keys add
 docker exec -it chia venv/bin/chia plots add -d /plots
 docker exec -it chia venv/bin/chia start farmer
 ```
