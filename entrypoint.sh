@@ -4,7 +4,7 @@ cd /chia-blockchain
 
 chia init
 
-chia configure --docker
+chia configure --docker true
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a variable -e keys=\"24words\""
