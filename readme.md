@@ -4,7 +4,7 @@ Currently latest = head of dev branch, tagged releases to come shortly
 
 ## Initialize
 ```
-docker run --name chia (chia-farmer, chia-harvester1 etc.) -d chia:latest (optional -v /path/to/plots:plots)
+docker run (optional --expose=58444 to run a testnet node)--name chia (chia-farmer, chia-harvester1 etc.) -d chia:latest (optional -v /path/to/plots:plots) 
 ```
 
 ## Config management

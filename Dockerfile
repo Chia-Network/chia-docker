@@ -1,5 +1,8 @@
 FROM ubuntu:latest
 
+EXPOSE 8555
+EXPOSE 58444
+
 ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
