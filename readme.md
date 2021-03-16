@@ -53,7 +53,7 @@ To generate keys
 chia keys generate
 ```
 
-If added the options plots earlier
+If added the optional plots earlier
 
 ```
 chia plots add -d /plots
