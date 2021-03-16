@@ -1,24 +1,64 @@
 #Official Chia Docker Container
+Currently latest = head of dev branch, tagged releases to come shortly
 
 
-### Startup
-Docker exec -it chia:latest /bin/bash
+## Initialize
+```
+Docker exec -it chia:latest /bin/bash (optional -v /path/to/plots:plots)
 
-starting with a chia config file modify the line
+. ./activate
 
-```self_hostname: &self_hostname "localhost"``` to read ```self_hostname: &self_hostname "127.0.0.1"```
+chia init
+```
 
-if you are starting an introducer you also want to modify this section
 
- ```harvester:
+## Config management
+```
+vim (or nano if you prefer) ~/.chia/testnet/config/config.yaml
+```
+
+modify the line
+```
+self_hostname: &self_hostname "localhost"
+```
+to match
+```
+self_hostname: &self_hostname "127.0.0.1"
+```
+
+
+#### Remote harvester
+
+```
+ harvester:
   # The harvester server (if run) will run on this port
   port: 8448
   farmer_peer:
     host: *self_hostname
-    port: 8447```
+    port: 8447
+```
+include the proper host and port for your remote farmer node or container.
 
-to include the proper host and port for your remote farmer node or container.
+## Starting Chia Blockchain
 
-Once your configuration is right. you can start chia as normal
+If you have your own keys
+```
+chia keys add
+```
 
-```chia start farmer```
+To generate keys
+```
+chia keys generate
+```
+
+If added the options plots earlier
+
+```
+chia plots add -d /plots
+```
+
+you can start chia as normal
+
+```
+chia start farmer
+```
