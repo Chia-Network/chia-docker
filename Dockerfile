@@ -18,10 +18,10 @@ WORKDIR /chia-blockchain
 
 ADD ./chiarun chiarun
 ADD ./entrypoint.sh entrypoint.sh
+RUN chmod +x chiarun
 
 
-
-ENTRYPOINT ["/bin/bash"]
-#ENTRYPOINT ["bash", "entrypoint.sh"]
+#ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["bash", "entrypoint.sh"]
 #CMD ["/home/ubuntu/services.py"]
 #ENTRYPOINT ["python3"]
