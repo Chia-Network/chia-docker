@@ -45,6 +45,9 @@ Activate venv
 If you have your own keys
 ```
 chia keys add (follow prompt)
+```
+or
+```
 echo "keys" | chia keys add -
 ```
 
