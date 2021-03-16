@@ -63,8 +63,7 @@ If added the optional plots earlier
 chia plots add -d /plots
 ```
 
-you can start chia as normal or
-
+you can start chia as usual
 ```
 chia start farmer
 optional single purpose node
@@ -81,16 +80,15 @@ drop from shell, leave running Container
 ```
 exit
 ```
-
-status from outside the container
-
-```
-docker exec -it chia venv/bin/chia show -s -c
-```
-
 #### or run the same commands externally with venv
 ```
 docker exec -it chia venv/bin/chia keys generate OR docker exec -it chia venv/bin/chia keys add
 docker exec -it chia venv/bin/chia plots add -d /plots
 docker exec -it chia venv/bin/chia start farmer
+```
+
+#### status from outside the container
+
+```
+docker exec -it chia venv/bin/chia show -s -c
 ```
