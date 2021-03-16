@@ -16,10 +16,7 @@ RUN git clone --branch dev https://github.com/Chia-Network/chia-blockchain.git \
 
 WORKDIR /chia-blockchain
 
-ADD ./chiarun chiarun
 ADD ./entrypoint.sh entrypoint.sh
-RUN chmod +x chiarun
-
 
 #ENTRYPOINT ["/bin/bash"]
 ENTRYPOINT ["bash", "entrypoint.sh"]
