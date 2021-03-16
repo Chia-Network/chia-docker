@@ -11,7 +11,6 @@ Docker exec -it chia:latest /bin/bash (optional -v /path/to/plots:plots)
 chia init
 ```
 
-
 ## Config management
 ```
 vim (or nano if you prefer) ~/.chia/testnet/config/config.yaml
@@ -25,7 +24,6 @@ to match
 ```
 self_hostname: &self_hostname "127.0.0.1"
 ```
-
 
 #### Remote harvester
 
