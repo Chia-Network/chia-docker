@@ -25,7 +25,7 @@ to match
 self_hostname: &self_hostname "127.0.0.1"
 ```
 
-#### Remote harvester
+#### optional: Remote harvester
 
 ```
  harvester:
