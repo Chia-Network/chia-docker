@@ -68,6 +68,11 @@ optional single purpose node
 (chia start harvester)
 ```
 
+verify things are working
+```
+chia show -s -c
+```
+
 drop from shell, leave running Container
 ```
 exit
