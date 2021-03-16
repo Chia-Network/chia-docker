@@ -37,8 +37,8 @@ include the proper host and port for your remote farmer node or container.
 ## Starting Chia Blockchain
 remain in the container with a bash shell
 
+Activate venv
 ```
-cd ~/chia-blockchain
 . ./activate
 ```
 
