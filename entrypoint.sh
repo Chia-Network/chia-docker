@@ -4,7 +4,7 @@ cd /chia-blockchain
 
 chia init
 
-chia configure --docker true
+#chia configure --docker true
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a variable -e keys=\"24words\""
@@ -22,13 +22,13 @@ chia plots add -d ${plots_dir}
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
-  if [[ -z ${farmer_address} || -z ${farmer_port} ]]; then
-    echo "A farmer peer address and port are required."
-    exit
-  else
-    chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
+  #if [[ -z ${farmer_address} || -z ${farmer_port} ]]; then
+  #  echo "A farmer peer address and port are required."
+  #  exit
+  #else
+    #chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
     chia start harvester
-  fi
+  #fi
 else
   chia start farmer
 fi

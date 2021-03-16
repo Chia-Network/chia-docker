@@ -21,7 +21,7 @@ ADD ./entrypoint.sh entrypoint.sh
 
 
 
-
-ENTRYPOINT ["bash", "entrypoint.sh"]
+ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["bash", "entrypoint.sh"]
 #CMD ["/home/ubuntu/services.py"]
 #ENTRYPOINT ["python3"]
