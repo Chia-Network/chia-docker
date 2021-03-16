@@ -35,7 +35,8 @@ self_hostname: &self_hostname "127.0.0.1"
 include the proper host and port for your remote farmer node or container.
 
 ## Starting Chia Blockchain
-remain in the container with a bash shell
+
+#### remain in the container with a bash shell
 
 Activate venv
 ```
@@ -79,4 +80,17 @@ chia show -s -c
 drop from shell, leave running Container
 ```
 exit
+```
+
+status from outside the container
+
+```
+docker exec -it chia venv/bin/chia show -s -c
+```
+
+#### or run the same commands externally with venv
+```
+docker exec -it chia venv/bin/chia keys generate
+docker exec -it chia venv/bin/chia plots add -d /plots
+docker exec -it chia venv/bin/chia start farmer
 ```
