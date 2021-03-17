@@ -37,7 +37,7 @@ jobs:
           echo "::set-output name=reg_token::$(curl -X POST -H "Authorization: token ${{ secrets.ORG_ADMIN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/orgs/Chia-Network/actions/runners/registration-token | jq -r '.token')"
 
       - name: Build docker image
-        run: docker build --no-cache --build-arg branch=${{ github.event.inputs.upstream_branch }} -t ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }} .
+        run: docker build --no-cache --build-arg BRANCH=${{ github.event.inputs.upstream_branch }} -t ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }} .
 
       - name: Push to github packages
         run: docker push ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }}
