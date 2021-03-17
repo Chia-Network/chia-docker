@@ -41,3 +41,8 @@ docker exec -it chia venv/bin/chia plots add -d /plots
 ```
 docker exec -it chia venv/bin/chia show -s -c
 ```
+
+#### Need a wallet?
+```
+docker exec -it chia-farmer1 venv/bin/chia wallet show (follow the prompts)
+```
