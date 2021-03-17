@@ -6,7 +6,9 @@ tagged releases to match rc and more to come shortly
 
 ## Basic Startup
 ```
-docker run (optional --expose=58444 to run a testnet node) --name <container-name> -d ghcr.io/chia-network/chia:latest (optional -v /path/to/plots:plots)
+docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
+(optional -v /path/to/plots:plots)
+(optional --expose=58444 to run a testnet node)
 ```
 
 ## Configuration
