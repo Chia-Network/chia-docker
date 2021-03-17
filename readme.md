@@ -1,8 +1,4 @@
 # Official Chia Docker Container
-Currently latest = head of dev branch
-
-tagged releases to match rc and more to come shortly
-
 
 ## Basic Startup
 ```
