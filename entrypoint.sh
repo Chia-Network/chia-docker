@@ -24,13 +24,13 @@ cat ~/.chia/testnet/config/config.yaml
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
-  #if [[ -z ${farmer_address} || -z ${farmer_port} ]]; then
-  #  echo "A farmer peer address and port are required."
-  #  exit
-  #else
-    #chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
+  if [[ -z ${farmer_address} || -z ${farmer_port} ]]; then
+    echo "A farmer peer address and port are required."
+    exit
+  else
+    chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
     chia start harvester
-  #fi
+  fi
 else
   chia start farmer
 fi

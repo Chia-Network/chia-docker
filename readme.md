@@ -4,89 +4,34 @@ Currently latest = head of dev branch
 tagged releases to match rc and more to come shortly
 
 
-## Initialize
+## Basic Startup
 ```
-docker run (optional --expose=58444 to run a testnet node)--name chia (chia-farmer, chia-harvester1 etc.) -d ghcr.io/chia-network/chia:latest (optional -v /path/to/plots:plots)
-```
-
-## Config management
-```
-docker exec -it chia /bin/bash
-vim (or nano if you prefer) ~/.chia/testnet/config/config.yaml
+docker run (optional --expose=58444 to run a testnet node) --name <container-name> -d ghcr.io/chia-network/chia:latest (optional -v /path/to/plots:plots)
 ```
 
-modify the line
+## Configuration
+
+You can modify the behavior of your Chia container by setting specific environment variables.
+
+To use your own keys pass
 ```
-self_hostname: &self_hostname "localhost"
-```
-to match
-```
-self_hostname: &self_hostname "127.0.0.1"
+-e keys="twenty four words"
 ```
 
-#### optional: remote harvester
-
+To start a farmer only node pass
 ```
- harvester:
-  # The harvester server (if run) will run on this port
-  port: 8448
-  farmer_peer:
-    host: *self_hostname
-    port: 8447
-```
-include the proper host and port for your remote farmer node or container.
-
-## Starting Chia Blockchain
-
-#### remain in the container with a bash shell
-
-Activate venv
-```
-. ./activate
+-e farmer="true"
 ```
 
-If you have your own keys
+To start a harvester only node pass
 ```
-chia keys add (follow prompt)
-```
-or
-```
-echo "keys" | chia keys add -
+-e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
 ```
 
-To generate keys
+#### or run the commands externally with venv
 ```
-chia keys generate
-```
-
-If added the optional plots earlier
-
-```
-chia plots add -d /plots
-```
-
-you can start chia as usual
-```
-chia start farmer
-optional single purpose node
-(chia start farmer-only)
-(chia start harvester)
-```
-
-verify things are working
-```
-chia show -s -c
-```
-
-drop from shell, leave running Container
-```
-exit
-```
-#### or run the same commands externally with venv
-```
-docker exec -it chia venv/bin/chia keys generate OR docker exec -it chia venv/bin/chia keys add
+docker exec -it chia venv/bin/chia keys add
 docker exec -it chia venv/bin/chia plots add -d /plots
-docker exec -it chia venv/bin/chia start farmer
 ```
 
 #### status from outside the container
