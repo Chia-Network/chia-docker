@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 EXPOSE 8555
-EXPOSE 58444
+EXPOSE 8444
 
 ENV keys="generate"
 ENV harvester="false"
