@@ -37,7 +37,7 @@ fi
 
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    chia configure --set-fullnode-port 58444
+    chia configure --set-fullnode-port 8444
   else
     chia configure --set-fullnode-port ${var.full_node_port}
   fi
