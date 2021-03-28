@@ -17,9 +17,7 @@ fi
 
 chia plots add -d ${plots_dir}
 
-sed -i 's/localhost/127.0.0.1/g' ~/.chia/testnet/config/config.yaml
-
-cat ~/.chia/testnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only
