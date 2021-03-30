@@ -10,9 +10,17 @@ docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
 
 You can modify the behavior of your Chia container by setting specific environment variables.
 
-To use your own keys pass
+To use your own keys pass as arguments on startup
 ```
--e keys="twenty four words"
+-v /path/to/key/file:/path/in/continer -e keys="/path/incontainer"
+```
+or pass keys into the running container
+```
+docker exec -it <container-name> venv/bin/chia keys add
+```
+alternatively you can pass in your local keychain, if you have previously deployed chia with these keys on the host machine
+```
+-v ~/.local/share/python_keyring/:/root/.local/share/python_keyring/
 ```
 
 To start a farmer only node pass
@@ -25,9 +33,8 @@ To start a harvester only node pass
 -e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
 ```
 
-#### or run the commands externally with venv
+#### or run commands externally with venv (this works for most chia XYZ commands)
 ```
-docker exec -it chia venv/bin/chia keys add
 docker exec -it chia venv/bin/chia plots add -d /plots
 ```
 
