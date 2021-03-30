@@ -10,7 +10,7 @@ docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
 
 You can modify the behavior of your Chia container by setting specific environment variables.
 
-To use your own keys pass as arguments on startup
+To use your own keys pass as arguments on startup (post 1.0.2 pre 1.0.2 must manually pass as shown below)
 ```
 -v /path/to/key/file:/path/in/continer -e keys="/path/incontainer"
 ```
