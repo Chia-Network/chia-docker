@@ -8,7 +8,7 @@ if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
   chia keys generate
 else
-  chia keys add -f ${keys}
+  chia keys add < ${keys}
 fi
 
 if [[ ! "$(ls -A /plots)" ]]; then
