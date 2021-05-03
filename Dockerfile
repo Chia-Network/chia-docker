@@ -8,7 +8,7 @@ ENV harvester="false"
 ENV farmer="false"
 ENV plots_dir="/plots"
 ENV farmer_address="null"
-ENV farmer_port="null"
+ENV farmer_port="8447"
 ENV testnet="false"
 ENV full_node_port="null"
 ARG BRANCH
