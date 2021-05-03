@@ -6,6 +6,15 @@ docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
 (optional -v /path/to/plots:plots)
 ```
 
+or to keep the configuration and keys on the host instead of in the container:
+```
+mkdir -p ~/.config/chia/python_keyring
+podman run --read-only -it --rm --name chia.init -v ~/.config/chia:/root/.chia:z --entrypoint /chia-blockchain/venv/bin/chia ghcr.io/chia-network/chia:latest init
+podman run --read-only -it --rm --name chia.keygen -v ~/.config/chia:/root/.chia:z -v ~/.config/chia/python_keyring:/root/.local/share/python_keyring:z --entrypoint /chia-blockchain/venv/bin/chia ghcr.io/chia-network/chia:latest keys generate
+podman run --read-only -it --name chia -v ~/.config/chia:/root/.chia:z -v ~/.config/chia/python_keyring:/root/.local/share/python_keyring:z ghcr.io/chia-network/chia:latest
+```
+
+
 ## Configuration
 
 You can modify the behavior of your Chia container by setting specific environment variables.
@@ -51,4 +60,9 @@ docker run -d --expose=58444 --expose=8555 -e testnet=true --name <container-nam
 #### Need a wallet?
 ```
 docker exec -it chia-farmer1 venv/bin/chia wallet show (follow the prompts)
+```
+
+#### Debug the container?
+```
+podman run -it --rm --name chia.debug -v ~/.config/chia:/root/.chia:z -e keys=/mnt/keys -v ~/.config/chia:/mnt/:z --entrypoint /usr/bin/bash ghcr.io/chia-network/chia:latest
 ```
