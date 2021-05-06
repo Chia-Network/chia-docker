@@ -8,11 +8,11 @@ on:
 
 jobs:
   docker_build:
-    runs-on: [Bootstrap]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const releases = github.repos.listReleases({
               owner: 'Chia-Network',
