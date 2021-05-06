@@ -2,6 +2,9 @@ name: Test official Chia Docker Image
 
 on:
   pull_request:
+  push:
+    branches:
+      - docker-test
 
 jobs:
   docker_build:
