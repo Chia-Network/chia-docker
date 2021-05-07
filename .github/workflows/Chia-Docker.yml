@@ -49,5 +49,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           no-cache: true
           push: true
-          build-args: BRANCH=${{ github.event.inputs.upstream_branch }}
+          build-args:
+            - "BRANCH=${{ github.event.inputs.upstream_branch }}"
           tags: ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }}
