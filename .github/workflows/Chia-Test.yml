@@ -21,4 +21,4 @@ jobs:
               repo: 'chia-blockchain',
             });
             return releases.data[0].tag_name;
-      - run: docker build --build-arg BRANCH=${{ steps.tag.outputs.result }}
+      - run: docker build --build-arg BRANCH=${{ steps.tag.outputs.result }} .
