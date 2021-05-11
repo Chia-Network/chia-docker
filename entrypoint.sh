@@ -15,8 +15,8 @@ if [[ ! "$(ls -A /plots)" ]]; then
   echo "Plots directory appears to be empty and you have not specified another, try mounting a plot directory with the docker -v command "
 fi
 
-for plots_dir in ${plots_dir//:/ }; do
-    chia plots add -d ${plots_dir}
+for p in ${plots_dir//:/ }; do
+    chia plots add -d ${p}
 done
 
 sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
