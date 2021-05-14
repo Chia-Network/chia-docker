@@ -9,6 +9,8 @@ ENV farmer="false"
 ENV plots_dir="/plots"
 ENV farmer_address="null"
 ENV farmer_port="null"
+ENV harvester_remote="false"
+ENV harvester_remote_ca_dir="/ca"
 ENV testnet="false"
 ENV full_node_port="null"
 ARG BRANCH
@@ -24,6 +26,7 @@ RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain
 
 WORKDIR /chia-blockchain
 RUN mkdir /plots
+RUN mkdir /ca
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
