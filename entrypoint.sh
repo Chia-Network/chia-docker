@@ -2,16 +2,7 @@ cd /chia-blockchain
 
 . ./activate
 
-if [[ ${harvester_remote} == 'true' ]]; then
-  if [[ ! "$(ls -A /ca)" ]]; then
-    echo "CA directory appears to be empty and you have not specified another, try mounting a ca directory with the docker -v command"
-    exit
-  else
-    chia init -c ${harvester_remote_ca_dir}
-  fi
-else
   chia init
-fi
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
