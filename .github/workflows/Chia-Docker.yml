@@ -21,20 +21,13 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.PACKAGE_ADMIN_PAT }}
+          password: ${{ secrets.ADMIN_PAT }}
 
       - name: Check out the repo
         uses: actions/checkout@v2
 
       - name: Docker Prune
         run: docker system prune --all
-
-      - name: Get Registration Token
-        id: get_reg_token
-        run: |
-          sudo apt-get -y install jq
-          echo "curl -X POST -H "Authorization: token ${{ secrets.ORG_ADMIN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/orgs/Chia-Network/actions/runners/registration-token | jq -r '.token'"
-          echo "::set-output name=reg_token::$(curl -X POST -H "Authorization: token ${{ secrets.ORG_ADMIN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/orgs/Chia-Network/actions/runners/registration-token | jq -r '.token')"
 
       - name: Build docker image
         run: docker build --no-cache --build-arg BRANCH=${{ github.event.inputs.upstream_branch }} -t ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }} .
