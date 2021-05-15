@@ -30,7 +30,7 @@ jobs:
         run: docker system prune --all
 
       - name: Build docker image
-        run: docker build --no-cache --build-arg BRANCH=${{ github.event.inputs.upstream_branch }} -t ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }} .
+        run: docker build --no-cache --build-arg BRANCH=${{ github.event.inputs.upstream_branch }} -t ghcr.io/${{ github.actor }}/chia:${{ github.event.inputs.image_tag }} .
 
       - name: Push to github packages
-        run: docker push ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }}
+        run: docker push ghcr.io/${{ github.actor }}/chia:${{ github.event.inputs.image_tag }}
