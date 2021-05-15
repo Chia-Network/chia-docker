@@ -6,15 +6,15 @@ on:
       upstream_branch:
         description: 'chia branch name to use'
         required: true
-        default: 'dev'
+        default: 'main'
       image_tag:
         description: 'special tag for this image build'
         required: true
-        default: 'unstable'
+        default: 'latest'
 
 jobs:
   docker_build_and_publish:
-    runs-on: [Bootstrap]
+    runs-on: ubuntu-latest
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
