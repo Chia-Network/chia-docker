@@ -54,8 +54,9 @@ s6-setuidgid abc chia plots add -d ${PLOTS_DIR}
 s6-setuidgid abc chia configure --set-log-level INFO
 s6-setuidgid abc chia configure --upnp false
 
+
 # configure harvester settings
-if [[ ${HARVESTER} == 'true' ]]
+if [[ ${HARVESTER_ONLY} == 'true' ]]
 then
   if [[ -z ${FARMER_ADDRESS} || -z ${FARMER_PORT} ]]
   then
