@@ -5,16 +5,18 @@ LABEL maintainer="edifus"
 
 # environment variables
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG BRANCH
-ENV keys="generate"
-ENV harvester="false"
-ENV farmer="false"
-ENV plots_dir="/plots"
-ENV farmer_address="null"
-ENV farmer_port="null"
-ENV testnet="false"
-ENV full_node_port="null"
-ENV log_display="false"
+ARG BRANCH="latest"
+
+ENV KEYS="generate"
+ENV HARVESTER="false"
+ENV FARMER="false"
+ENV PLOTS_DIR="/plots"
+ENV FARMER_ADDRESS="null"
+ENV FARMER_PORT="null"
+ENV TESTNET="false"
+ENV FULL_NODE_PORT="null"
+ENV TAIL_DEBUG_LOGS="false"
+ENV HOME=/config
 
 # install chia-blockchain
 RUN apt-get update && \
@@ -22,30 +24,26 @@ RUN apt-get update && \
       curl \
       jq \
       python3 \
-      ansible \
       tar \
-      bash \
+      lsb-release \
       ca-certificates \
       git \
+      sudo \
       openssl \
       unzip \
       wget \
       python3-pip \
-      sudo \
-      acl \
       build-essential \
       python3-dev \
-      python3.8-venv \
-      python3.8-distutils \
-      apt \
-      nfs-common \
-      python-is-python3 \
-      vim && \
+      python3.7-venv \
+      python3.7-distutils && \
     echo "**** cloning ${BRANCH} ****" && \
     git clone https://github.com/Chia-Network/chia-blockchain.git --branch ${BRANCH} --recurse-submodules && \
-    cd chia-blockchain && \
-    /usr/bin/sh ./install.sh && \
+    cd /chia-blockchain && \
+    /bin/sh ./install.sh && \
     mkdir /plots && \
+    chown abc:abc -R /chia-blockchain && \
+    chown abc:abc -R /plots && \
     echo "**** cleanup ****" && \
     apt-get clean && \
     rm -rf \
@@ -53,10 +51,7 @@ RUN apt-get update && \
   	  /var/lib/apt/lists/* \
   	  /var/tmp/*
 
-WORKDIR /chia-blockchain
-ADD ./entrypoint.sh entrypoint.sh
+COPY root/ /
 
 EXPOSE 8555 8444
-VOLUME /plots
-
-ENTRYPOINT ["bash", "./entrypoint.sh"]
+VOLUME /plots /config

@@ -1,0 +1,68 @@
+#!/usr/bin/with-contenv bash
+
+# update chia-blockchain
+cd /chia-blockchain
+git fetch
+git checkout latest
+git reset --hard FETCH_HEAD
+/bin/sh install.sh
+chown abc:abc -R /chia-blockchain
+
+# activate chia-blockchain venv
+source ./activate
+
+# init certs
+if [[ -z ${CACERTS_DIR} ]]; then
+  chia init
+else
+  chia init -c ${CACERTS_DIR}
+fi
+
+# remove ipv6
+sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
+
+# configure plots directory
+if [[ ! "$(ls -A ${PLOTS_DIR})" ]]; then
+  echo "Plots directory appears to be empty and you have not specified another, try mounting a plot directory with the docker -v command "
+fi
+
+chia plots add -d ${PLOTS_DIR}
+
+# configure chia daemon
+chia configure --set-log-level INFO
+chia configure --upnp false
+
+# configure harvester settings
+if [[ ${HARVESTER} == 'true' ]]; then
+  if [[ -z ${FARMER_ADDRESS} || -z ${FARMER_PORT} ]]; then
+    echo "A farmer peer address and port are required."
+    exit
+  else
+    chia configure --set-farmer-peer ${FARMER_ADDRESS}:${FARMER_PORT}
+  fi
+fi
+
+# configured testnet
+if [[ ${TESTNET} == "true" ]]; then
+  if [[ -z $FULL_NODE_PORT || $FULL_NODE_PORT == "null" ]]; then
+    chia configure --set-fullnode-port 58444
+  else
+    chia configure --set-fullnode-port ${FULL_NODE_PORT}
+  fi
+fi
+
+# generate keys
+if [[ ${KEYS} == "generate" ]]; then
+  echo "**** Generating new keys ****"
+  echo "To use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
+  chia keys generate
+else
+  chia keys add -f ${KEYS}
+fi
+
+# deactivate chia-blockchain venv
+deactivate
+
+# set proper user permissions
+chown abc:abc -R \
+  /config /chia-blockchain

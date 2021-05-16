@@ -1,0 +1,29 @@
+#!/usr/bin/with-contenv bash
+
+cd /chia-blockchain ; . ./activate
+
+_term() {
+  echo "Caught SIGTERM signal!"
+  s6-setuidgid abc /chia-blockchain/venv/bin/chia stop -d all 2>/dev/null
+}
+
+trap _term SIGTERM
+
+if [[ ${farmer} == 'true' ]]; then
+  s6-setuidgid abc /chia-blockchain/venv/bin/chia start farmer-only
+elif [[ ${harvester} == 'true' ]]; then
+  s6-setuidgid abc /chia-blockchain/venv/bin/chia start harvester
+else
+  s6-setuidgid abc /chia-blockchain/venv/bin/chia start farmer
+fi
+
+while true
+do
+  if [[ ${TAIL_DEBUG_LOGS} == 'true' ]]; then
+    tail -F /config/.chia/mainnet/log/debug.log
+  else
+    sleep 30
+  fi
+done
+
+wait
