@@ -40,7 +40,7 @@ RUN apt-get update && \
       python3.7-venv \
       python3.7-distutils && \
     echo "**** cloning ${BRANCH} ****" && \
-    git clone https://github.com/Chia-Network/chia-blockchain.git --branch ${BRANCH} --recurse-submodules && \
+    git clone https://github.com/Chia-Network/chia-blockchain.git --branch latest --recurse-submodules && \
     cd /chia-blockchain && \
     /bin/sh ./install.sh && \
     mkdir /plots && \
