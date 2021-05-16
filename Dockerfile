@@ -8,15 +8,17 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG BRANCH="latest"
 
 ENV KEYS="generate"
-ENV HARVESTER="false"
-ENV FARMER="false"
+ENV HARVESTER_ONLY="false"
+ENV FARMER_ONLY="false"
+ENV NODE_ONLY="false"
+ENV WALLET_ONLY="false"
 ENV PLOTS_DIR="/plots"
 ENV FARMER_ADDRESS="null"
 ENV FARMER_PORT="null"
 ENV TESTNET="false"
 ENV FULL_NODE_PORT="null"
 ENV TAIL_DEBUG_LOGS="false"
-ENV HOME=/config
+ENV HOME="/config"
 
 # install chia-blockchain
 RUN apt-get update && \
@@ -42,8 +44,7 @@ RUN apt-get update && \
     cd /chia-blockchain && \
     /bin/sh ./install.sh && \
     mkdir /plots && \
-    chown abc:abc -R /chia-blockchain && \
-    chown abc:abc -R /plots && \
+    chown abc:abc -R /plots /config /chia-blockchain && \
     echo "**** cleanup ****" && \
     apt-get clean && \
     rm -rf \

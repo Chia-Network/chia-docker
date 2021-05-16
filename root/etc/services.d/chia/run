@@ -1,22 +1,43 @@
 #!/usr/bin/with-contenv bash
 
-cd /chia-blockchain ; . ./activate
-
+# shutdown trap
 _term() {
   echo "Caught SIGTERM signal!"
   s6-setuidgid abc /chia-blockchain/venv/bin/chia stop -d all 2>/dev/null
 }
-
 trap _term SIGTERM
 
-if [[ ${farmer} == 'true' ]]; then
-  s6-setuidgid abc /chia-blockchain/venv/bin/chia start farmer-only
-elif [[ ${harvester} == 'true' ]]; then
-  s6-setuidgid abc /chia-blockchain/venv/bin/chia start harvester
+# activate chia-blockchain venv
+cd /chia-blockchain ; . ./activate
+
+# run chia daemons
+if [[ ${FARMER_ONLY} == 'true' || ${HARVESTER_ONLY} == 'true' || ${NODE_ONLY} == 'true' || ${WALLET_ONLY} == 'true' ]]
+then
+  # start farmer-only
+  if [[ ${FARMER_ONLY} == 'true' ]]
+  then
+    s6-setuidgid abc /chia-blockchain/venv/bin/chia start farmer-only
+  fi
+  # start harvester
+  if [[ ${HARVESTER_ONLY} == 'true' ]]
+  then
+    s6-setuidgid abc /chia-blockchain/venv/bin/chia start harvester
+  fi
+  # start node-only
+  if [[ ${NODE_ONLY} == 'true' ]]
+  then
+    s6-setuidgid abc /chia-blockchain/venv/bin/chia start node
+  fi
+  # start wallet-only
+  if [[ ${WALLET_ONLY} == 'true' ]]; then
+    s6-setuidgid abc /chia-blockchain/venv/bin/chia start wallet-only
+  fi
 else
+  # start full-node
   s6-setuidgid abc /chia-blockchain/venv/bin/chia start farmer
 fi
 
+# run loop
 while true
 do
   if [[ ${TAIL_DEBUG_LOGS} == 'true' ]]; then
@@ -25,5 +46,3 @@ do
     sleep 30
   fi
 done
-
-wait
