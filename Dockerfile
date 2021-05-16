@@ -1,5 +1,11 @@
-FROM ubuntu:latest
+FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 
+# set version label
+LABEL maintainer="edifus"
+
+# environment variables
+ARG DEBIAN_FRONTEND="noninteractive"
+ARG BRANCH
 ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
@@ -9,10 +15,9 @@ ENV farmer_port="null"
 ENV testnet="false"
 ENV full_node_port="null"
 ENV log_display="false"
-ARG BRANCH
 
-RUN mkdir /plots && \
-  DEBIAN_FRONTEND=noninteractive apt-get update && \
+# install chia-blockchain
+RUN apt-get update && \
     apt-get install -y \
       curl \
       jq \
@@ -40,6 +45,7 @@ RUN mkdir /plots && \
     git clone https://github.com/Chia-Network/chia-blockchain.git --branch ${BRANCH} --recurse-submodules && \
     cd chia-blockchain && \
     /usr/bin/sh ./install.sh && \
+    mkdir /plots && \
     echo "**** cleanup ****" && \
     apt-get clean && \
     rm -rf \
