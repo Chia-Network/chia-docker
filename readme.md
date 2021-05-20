@@ -33,6 +33,8 @@ To start a harvester only node pass
 -e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
 ```
 
+The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
+
 #### or run commands externally with venv (this works for most chia XYZ commands)
 ```
 docker exec -it chia venv/bin/chia plots add -d /plots
