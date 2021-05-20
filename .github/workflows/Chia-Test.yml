@@ -1,0 +1,22 @@
+name: Test official Chia Docker Image
+
+on:
+  pull_request:
+
+jobs:
+  docker_build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/github-script@v4
+        id: 'tag'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
+          script: |
+            const releases = await github.repos.listReleases({
+              owner: 'Chia-Network',
+              repo: 'chia-blockchain',
+            });
+            return releases.data[0].tag_name;
+      - run: docker build --build-arg BRANCH="${{ steps.tag.outputs.result }}" .
