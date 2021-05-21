@@ -5,7 +5,11 @@
 docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
 (optional -v /path/to/plots:/plots)
 ```
-
+#### set the timezone for the container (optional, defaults to UTC)
+Timezones can be configured using the `TZ` env variable. A list of supported time zones can be found [here](http://manpages.ubuntu.com/manpages/focal/man3/DateTime::TimeZone::Catalog.3pm.html)
+```
+-e TZ="America/Chicago"
+```
 ## Configuration
 
 You can modify the behavior of your Chia container by setting specific environment variables.
