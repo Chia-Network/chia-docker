@@ -13,9 +13,10 @@ ENV testnet="false"
 ENV full_node_port="null"
 ARG BRANCH
 
+ARG TZ=Etc/UTC
+ARG DEBIAN_FRONTEND=noninteractive
 
-RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y \
                        acl \
                        ansible \
