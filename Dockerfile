@@ -11,7 +11,7 @@ ENV farmer_address="null"
 ENV farmer_port="null"
 ENV testnet="false"
 ENV full_node_port="null"
-ARG BRANCH
+ARG BRANCH=main
 
 ARG TZ=Etc/UTC
 ARG DEBIAN_FRONTEND=noninteractive
