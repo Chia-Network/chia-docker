@@ -33,6 +33,11 @@ To start a harvester only node pass
 -e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
 ```
 
+To start a remote harvester only node pass
+```
+-v /path/to/remote/ca/file:/ca -e harvester_remote="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
+```
+
 #### or run commands externally with venv (this works for most chia XYZ commands)
 ```
 docker exec -it chia venv/bin/chia plots add -d /plots
