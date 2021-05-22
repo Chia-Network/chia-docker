@@ -7,12 +7,12 @@ ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
 ENV plots_dir="/plots"
-ENV farmer_address="null"
-ENV farmer_port="null"
+ENV farmer_address=""
+ENV farmer_port=""
 ENV harvester_remote="false"
 ENV harvester_remote_ca_dir="/ca"
 ENV testnet="false"
-ENV full_node_port="null"
+ENV full_node_port=""
 ARG BRANCH
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common python-is-python3 vim
