@@ -2,7 +2,7 @@ cd /chia-blockchain
 
 . ./activate
 
-  chia init
+chia init
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
@@ -37,7 +37,11 @@ elif [[ ${harvester} == 'true' ]]; then
     exit
   else
     chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    chia start harvester
+    if [[ ${harvester_remote} == 'true' ]]; then
+      chia start harvester -r
+    else
+      chia start harvester
+    fi
   fi
 else
   chia start farmer
