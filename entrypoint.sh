@@ -7,6 +7,13 @@ chia init
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
   chia keys generate
+elif [[ ${keys} == "copy" ]]; then
+  if [[ -z ${ca}; then
+    echo "A path to a copy of the farmer peer's ssl/ca required."
+	exit
+  else
+  chia init -c ${ca}
+  fi
 else
   chia keys add -f ${keys}
 fi
@@ -24,8 +31,8 @@ sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
-  if [[ -z ${farmer_address} || -z ${farmer_port} ]]; then
-    echo "A farmer peer address and port are required."
+  if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
+    echo "A farmer peer address, port, and ca path are required."
     exit
   else
     chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
