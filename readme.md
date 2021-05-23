@@ -30,7 +30,7 @@ To start a farmer only node pass
 
 To start a harvester only node pass
 ```
--e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
+-e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
 ```
 
 The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
