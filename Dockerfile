@@ -22,6 +22,7 @@ RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
+ENV PATH=/chia-blockchain/venv/bin/:$PATH
 WORKDIR /chia-blockchain
 ADD ./entrypoint.sh entrypoint.sh
 
