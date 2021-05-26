@@ -3,17 +3,44 @@ FROM ubuntu:latest
 EXPOSE 8555
 EXPOSE 8444
 
-ENV keys="generate"
-ENV harvester="false"
-ENV farmer="false"
-ENV plots_dir="/plots"
-ENV farmer_address="null"
-ENV farmer_port="null"
-ENV testnet="false"
-ENV full_node_port="null"
-ARG BRANCH
+# chia start {all | node | harvester | farmer | farmer-no-wallet | farmer-only | timelord
+# timelord-only | timelord-launcher-only | wallet | wallet-only | introducer | simulator}
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common python-is-python3 vim
+ENV keys="generate" \
+  harvester="false" \
+  farmer="false" \
+  plots_dir="/plots" \
+  farmer_address="null" \
+  farmer_port="null" \
+  testnet="false" \
+  full_node_port="null" \
+  BRANCH=latest
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  curl \
+  jq \
+  python3 \
+  ansible \
+  tar \
+  bash \
+  ca-certificates \
+  git \
+  openssl \
+  unzip \
+  wget \
+  python3-pip \
+  sudo \
+  acl \
+  build-essential \
+  python3-dev \
+  python3.8-venv \
+  python3.8-distutils \
+  apt \
+  nfs-common \
+  python-is-python3 \
+  vim \
+  tzdata
 
 RUN echo "cloning ${BRANCH}"
 RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
@@ -23,7 +50,6 @@ RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain
 && /usr/bin/sh ./install.sh
 
 WORKDIR /chia-blockchain
-RUN mkdir /plots
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
