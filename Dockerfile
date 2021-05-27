@@ -41,6 +41,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
   python-is-python3 \
   vim \
   tzdata
+  && rm -rf /var/lib/apt/lists/*
 
 RUN echo "cloning ${BRANCH}"
 RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
