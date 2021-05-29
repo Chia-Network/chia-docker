@@ -23,7 +23,6 @@ RUN git clone --branch main https://github.com/Chia-Network/chia-blockchain.git 
 && /usr/bin/sh ./install.sh
 
 WORKDIR /chia-blockchain
-RUN mkdir /plots
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
