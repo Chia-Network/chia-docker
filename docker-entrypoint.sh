@@ -33,20 +33,6 @@ done
 
 sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
 
-if [[ ${farmer} == 'true' ]]; then
-  chia start farmer-only
-elif [[ ${harvester} == 'true' ]]; then
-  if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
-    echo "A farmer peer address, port, and ca path are required."
-    exit
-  else
-    chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
-    chia start harvester
-  fi
-else
-  chia start farmer
-fi
-
 if [[ ${testnet} == "true" ]]; then
   if [[ -z $full_node_port || $full_node_port == "null" ]]; then
     chia configure --set-fullnode-port 58444
@@ -55,4 +41,4 @@ if [[ ${testnet} == "true" ]]; then
   fi
 fi
 
-while true; do sleep 30; done;
+exec "$@"
