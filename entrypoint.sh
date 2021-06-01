@@ -13,7 +13,7 @@ if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
   chia keys generate
 elif [[ ${keys} == "copy" ]]; then
-  if [[ -z ${ca}; then
+  if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
