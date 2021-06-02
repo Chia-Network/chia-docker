@@ -9,6 +9,11 @@ cd /chia-blockchain
 
 chia init
 
+if [[ ${testnet} == 'true' ]]; then
+   echo "configure testnet"
+   chia configure --testnet true
+fi
+
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
   chia keys generate
@@ -45,14 +50,6 @@ elif [[ ${harvester} == 'true' ]]; then
   fi
 else
   chia start farmer
-fi
-
-if [[ ${testnet} == "true" ]]; then
-  if [[ -z $full_node_port || $full_node_port == "null" ]]; then
-    chia configure --set-fullnode-port 58444
-  else
-    chia configure --set-fullnode-port ${var.full_node_port}
-  fi
 fi
 
 while true; do sleep 30; done;
