@@ -35,7 +35,7 @@ To start a harvester only node pass
 
 To start a remote harvester only node pass
 ```
--v /path/to/remote/ca/file:/ca -e harvester_remote="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
+-v /path/to/remote/ca/file:/ca -e harvester="true" -e harvester_remote="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber"
 ```
 
 #### or run commands externally with venv (this works for most chia XYZ commands)
