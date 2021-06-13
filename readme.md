@@ -20,7 +20,7 @@ To use your own keys pass as arguments on startup (post 1.0.2 pre 1.0.2 must man
 ```
 or pass keys into the running container
 ```
-docker exec -it <container-name> venv/bin/chia keys add
+docker exec -it <container-name> chia keys add
 ```
 alternatively you can pass in your local keychain, if you have previously deployed chia with these keys on the host machine
 ```
@@ -41,12 +41,12 @@ The `plots_dir` environment variable can be used to specify the directory contai
 
 #### or run commands externally with venv (this works for most chia XYZ commands)
 ```
-docker exec -it chia venv/bin/chia plots add -d /plots
+docker exec -it <container-name> chia plots add -d /plots
 ```
 
 #### status from outside the container
 ```
-docker exec -it chia venv/bin/chia show -s -c
+docker exec -it <container-name> chia show -s -c
 ```
 
 #### Connect to testnet?
@@ -56,5 +56,5 @@ docker run -d --expose=58444 --expose=8555 -e testnet=true --name <container-nam
 
 #### Need a wallet?
 ```
-docker exec -it chia-farmer1 venv/bin/chia wallet show (follow the prompts)
+docker exec -it <container-name> chia wallet show (follow the prompts)
 ```
