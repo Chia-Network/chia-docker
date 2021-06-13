@@ -1,16 +1,14 @@
-if [[ -n "${TZ}" ]]; then
-  echo "Setting timezone to ${TZ}"
+#!/bin/bash
+
+if [[ -n "$TZ" ]]; then
+  echo "Setting timezone to $TZ"
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 fi
-
-cd /chia-blockchain
-
-. ./activate
 
 chia init
 
 if [[ ${keys} == "generate" ]]; then
-  echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
+  echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=/path/in/container"
   chia keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
@@ -26,7 +24,7 @@ fi
 for p in ${plots_dir//:/ }; do
     mkdir -p ${p}
     if [[ ! "$(ls -A $p)" ]]; then
-        echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
+        echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command."
     fi
     chia plots add -d ${p}
 done
