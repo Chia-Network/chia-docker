@@ -56,9 +56,6 @@ jobs:
   docker_build_and_publish_dockerhub:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -71,6 +68,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PAT }}
 
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Docker Prune
+        run: docker system prune --all
+
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -78,4 +81,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           no-cache: true
           push: true
+          build-args: |
+            "BRANCH=${{ github.event.inputs.upstream_branch }}"
           tags: chianetwork/chia-docker:latest
