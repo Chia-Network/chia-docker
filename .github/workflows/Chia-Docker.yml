@@ -83,4 +83,4 @@ jobs:
           push: true
           build-args: |
             "BRANCH=${{ github.event.inputs.upstream_branch }}"
-          tags: chianetwork/chia-docker:latest
+          tags: chianetwork/chia-docker:${{ github.event.inputs.image_tag }}
