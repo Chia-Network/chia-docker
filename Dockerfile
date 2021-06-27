@@ -24,8 +24,6 @@ RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
-RUN sed -i 's/log_level: WARNING/log_level: DEBUG/g' /root/.chia/mainnet/config/config.yaml
-
 WORKDIR /chia-blockchain
 RUN mkdir /plots
 RUN mkdir /ca
