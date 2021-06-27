@@ -29,6 +29,8 @@ fi
 find ${plots_dir} -iname "*.plot" -type f | xargs -n 1 -I[] dirname [] | grep -v "Trash" | sort --unique | xargs -n 1 -I[] chia plots add -d []
 
 sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
+# use DEBUG as default log_level
+sed -i 's/log_level: WARNING/log_level: DEBUG/g' /root/.chia/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only
