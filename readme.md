@@ -58,3 +58,8 @@ docker run -d --expose=58444 --expose=8555 -e testnet=true --name <container-nam
 ```
 docker exec -it chia-farmer1 venv/bin/chia wallet show (follow the prompts)
 ```
+
+## Building
+```
+docker build -t chia --build-arg BRANCH=main .
+```
