@@ -32,6 +32,7 @@ for p in ${plots_dir//:/ }; do
 done
 
 sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
+sed -i "s/\\s*(self_hostname:) *(.*)\$/\$1 $self_hostname/gm" ~/.chia/mainnet/config/config.yaml
 
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only

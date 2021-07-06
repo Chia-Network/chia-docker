@@ -11,6 +11,7 @@ ENV farmer_address="null"
 ENV farmer_port="null"
 ENV testnet="false"
 ENV full_node_port="null"
+ENV self_hostname="127.0.0.1"
 ENV TZ="UTC"
 ARG BRANCH
 
