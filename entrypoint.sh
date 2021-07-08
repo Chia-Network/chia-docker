@@ -7,7 +7,9 @@ cd /chia-blockchain
 
 . ./activate
 
-chia init
+if [[ ! -f ~/.chia/mainnet/wallet/db/wallet_peers.sqlite ]]; then 
+  chia init
+fi
 
 if [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
