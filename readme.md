@@ -39,6 +39,16 @@ To start a harvester only node pass
 
 The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
 
+To disable UPNP
+```
+-e upnp_disabled="true"
+```
+
+To set the log level to one of `CRITICAL`, `ERROR`, `WARNING`, `INFO`, `DEBUG`, `NOTSET`
+```
+-e log_level="DEBUG"
+```
+
 #### or run commands externally with venv (this works for most chia XYZ commands)
 ```
 docker exec -it chia venv/bin/chia plots add -d /plots

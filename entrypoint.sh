@@ -31,6 +31,14 @@ for p in ${plots_dir//:/ }; do
     chia plots add -d ${p}
 done
 
+if [[ "${upnp_disabled}" == "true" ]]; then
+  chia configure --enable-upnp false
+fi
+
+if [[ -n "${log_level}" ]]; then
+  chia configure --log-level "${log_level}"
+fi
+
 sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
 sed -i -E "s/\s*(self_hostname:)\s*(.*)$/\1 $self_hostname/gm" ~/.chia/mainnet/config/config.yaml
 
