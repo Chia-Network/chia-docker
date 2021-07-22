@@ -49,6 +49,11 @@ To set the log level to one of `CRITICAL`, `ERROR`, `WARNING`, `INFO`, `DEBUG`, 
 -e log_level="DEBUG"
 ```
 
+To set the self_hostname to allow communication external to the container
+```
+-e self_hostname="IP_ADDRESS_HERE"
+```
+
 #### or run commands externally with venv (this works for most chia XYZ commands)
 ```
 docker exec -it chia venv/bin/chia plots add -d /plots
