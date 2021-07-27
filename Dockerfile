@@ -13,9 +13,13 @@ ENV harvester_remote="false"
 ENV harvester_remote_ca_dir="/ca"
 ENV testnet="false"
 ENV full_node_port=""
+ENV TZ="UTC"
 ARG BRANCH
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common python-is-python3 vim sed
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common python-is-python3 vim tzdata
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning ${BRANCH}"
 RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
@@ -24,6 +28,7 @@ RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain
 && chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
+ENV PATH=/chia-blockchain/venv/bin/:$PATH
 WORKDIR /chia-blockchain
 RUN mkdir /plots
 RUN mkdir /ca
