@@ -14,7 +14,7 @@ on:
 
 jobs:
   docker_build_and_publish_github:
-    runs-on: [Bootstrap]
+    runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -31,16 +31,6 @@ jobs:
 
       - name: Check out the repo
         uses: actions/checkout@v2
-
-      - name: Docker Prune
-        run: docker system prune --all
-
-      - name: Get Registration Token
-        id: get_reg_token
-        run: |
-          sudo apt-get -y install jq
-          echo "curl -X POST -H "Authorization: token ${{ secrets.ORG_ADMIN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/orgs/Chia-Network/actions/runners/registration-token | jq -r '.token'"
-          echo "::set-output name=reg_token::$(curl -X POST -H "Authorization: token ${{ secrets.ORG_ADMIN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/orgs/Chia-Network/actions/runners/registration-token | jq -r '.token')"
 
       - name: Build docker image and push to github packages
         uses: docker/build-push-action@v2
@@ -70,9 +60,6 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v2
-
-      - name: Docker Prune
-        run: docker system prune --all
 
       - name: Build and push
         uses: docker/build-push-action@v2
