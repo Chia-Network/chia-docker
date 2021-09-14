@@ -38,7 +38,7 @@ for p in ${plots_dir//:/ }; do
     chia plots add -d ${p}
 done
 
-sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
+sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
 
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only

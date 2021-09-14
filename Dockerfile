@@ -3,6 +3,7 @@ FROM ubuntu:latest
 EXPOSE 8555
 EXPOSE 8444
 
+ENV CHIA_ROOT=/root/.chia/mainnet
 ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
