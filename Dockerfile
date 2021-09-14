@@ -3,6 +3,7 @@ FROM ubuntu:latest
 EXPOSE 8555
 EXPOSE 8444
 
+ENV CHIA_ROOT=/root/.chia/mainnet
 ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
@@ -22,7 +23,6 @@ RUN echo "cloning ${BRANCH}"
 RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
 && cd chia-blockchain \
 && git submodule update --init mozilla-ca \
-&& chmod +x install.sh \
 && /usr/bin/sh ./install.sh
 
 ENV PATH=/chia-blockchain/venv/bin/:$PATH
