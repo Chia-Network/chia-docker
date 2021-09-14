@@ -10,7 +10,6 @@ ENV plots_dir="/plots"
 ENV farmer_address="null"
 ENV farmer_port="null"
 ENV testnet="false"
-ENV full_node_port="null"
 ENV TZ="UTC"
 ARG BRANCH
 
