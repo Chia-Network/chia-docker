@@ -7,7 +7,7 @@ cd /chia-blockchain
 
 . ./activate
 
-chia init
+chia init --fix-ssl-permissions
 
 if [[ ${testnet} == 'true' ]]; then
    echo "configure testnet"
