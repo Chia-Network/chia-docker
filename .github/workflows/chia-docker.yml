@@ -1,21 +1,18 @@
-name: Build official Chia Docker Image
+name: Build Main
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-    inputs:
-      upstream_branch:
-        description: 'chia branch name to use'
-        required: true
-        default: 'dev'
-      image_tag:
-        description: 'special tag for this image build'
-        required: true
-        default: 'unstable'
 
 jobs:
   docker_build_and_publish_github:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -35,8 +32,29 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PAT }}
 
-      - name: Check out the repo
-        uses: actions/checkout@v2
+      # Get the most recent release from chia-blockchain and build that
+      - uses: actions/github-script@v4
+        id: 'latest-tag'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
+          script: |
+            const releases = await github.repos.listReleases({
+              owner: 'Chia-Network',
+              repo: 'chia-blockchain',
+            });
+            return releases.data[0].tag_name;
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ghcr.io/chia-network/chia
+            chianetwork/chia-docker
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ steps.latest-tag.outputs.result }}
 
       - name: Build docker image and push to github packages
         uses: docker/build-push-action@v2
@@ -46,7 +64,5 @@ jobs:
           no-cache: true
           push: true
           build-args: |
-            "BRANCH=${{ github.event.inputs.upstream_branch }}"
-          tags: |
-            ghcr.io/chia-network/chia:${{ github.event.inputs.image_tag }}
-            chianetwork/chia-docker:${{ github.event.inputs.image_tag }}
+            "BRANCH=${{ steps.latest-tag.outputs.result }}"
+          tags: ${{ steps.meta.outputs.tags }}
