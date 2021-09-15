@@ -61,5 +61,5 @@ docker exec -it chia-farmer1 venv/bin/chia wallet show (follow the prompts)
 
 ## Building
 ```
-docker build -t chia --build-arg BRANCH=main .
+docker build -t chia --build-arg BRANCH=latest .
 ```
