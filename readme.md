@@ -139,7 +139,7 @@ docker exec -it chia venv/bin/chia farm summary
 ### Connect to testnet?
 
 ```bash
-docker run -d --expose=58444 --expose=8555 -e testnet=true --name <container-name> ghcr.io/chia-network/chia:latest
+docker run -d --expose=58444 -e testnet=true --name chia ghcr.io/chia-network/chia:latest
 ```
 
 #### Need a wallet?
