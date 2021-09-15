@@ -143,6 +143,9 @@ docker run -d --expose=58444 --expose=8555 -e testnet=true --name <container-nam
 ```
 
 #### Need a wallet?
+
+To get new wallet, execute command and follow the prompts:
+
 ```bash
-docker exec -it chia-farmer1 venv/bin/chia wallet show (follow the prompts)
+docker exec -it chia-farmer1 venv/bin/chia wallet show
 ```
