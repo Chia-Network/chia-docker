@@ -1,12 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+# shellcheck disable=SC2154
 if [[ -n "${TZ}" ]]; then
   echo "Setting timezone to ${TZ}"
-  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+  ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
 fi
 
-cd /chia-blockchain
+cd /chia-blockchain || exit 1
 
+# shellcheck disable=SC1091
 . ./activate
 
 chia init --fix-ssl-permissions
@@ -26,18 +28,18 @@ elif [[ ${keys} == "copy" ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  chia init -c ${ca}
+  chia init -c "${ca}"
   fi
 else
-  chia keys add -f ${keys}
+  chia keys add -f "${keys}"
 fi
 
 for p in ${plots_dir//:/ }; do
-    mkdir -p ${p}
-    if [[ ! "$(ls -A $p)" ]]; then
+    mkdir -p "${p}"
+    if [[ ! $(ls -A "$p") ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    chia plots add -d ${p}
+    chia plots add -d "${p}"
 done
 
 sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"

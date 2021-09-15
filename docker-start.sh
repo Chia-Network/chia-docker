@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC2154
 if [[ ${farmer} == 'true' ]]; then
   chia start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
@@ -5,7 +8,7 @@ elif [[ ${harvester} == 'true' ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    chia configure --set-farmer-peer ${farmer_address}:${farmer_port}
+    chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
     chia start harvester
   fi
 else
