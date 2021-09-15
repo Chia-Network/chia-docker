@@ -92,7 +92,7 @@ version: "3.6"
 services:
   chia:
     container_name: chia
-    restart: always
+    restart: unless-stopped
     image: ghcr.io/chia-network/chia:latest
     ports:
       - 8447:8447
