@@ -1,0 +1,8 @@
+---
+##########################
+## Hadolint config file ##
+##########################
+ignored:
+  - DL3003 # Use WORKDIR to switch to a directory.
+  - DL3007 # :latest image tag
+  - DL3008 # require apt specific versions
