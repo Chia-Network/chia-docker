@@ -26,7 +26,7 @@ services:
     restart: always
     image: ghcr.io/chia-network/chia:latest
     ports:
-      - 8447:8447
+      - 8444:8444
     volumes:
       - /path/to/plots:/plots
 ```
