@@ -12,7 +12,7 @@ docker run --name chia -d ghcr.io/chia-network/chia:latest --expose=8444 -v /pat
 Syntax
 ```bash
 docker run --name <container-name> -d ghcr.io/chia-network/chia:latest 
-optional accept incoming connections: --expose=8447
+optional accept incoming connections: --expose=8444
 optional: -v /path/to/plots:/plots
 ```
 
