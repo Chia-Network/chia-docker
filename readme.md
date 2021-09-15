@@ -95,7 +95,7 @@ services:
     restart: unless-stopped
     image: ghcr.io/chia-network/chia:latest
     ports:
-      - 8447:8447
+      - 8444:8444
     environment:
       # Farmer Only    
 #     - farmer="true"
