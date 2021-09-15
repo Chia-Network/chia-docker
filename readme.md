@@ -7,7 +7,7 @@ These examples shows valid setups using Chia for both docker run and docker-comp
 ### Docker run
 
 ```bash
-docker run --name chia -d ghcr.io/chia-network/chia:latest --expose=8447 -v /path/to/plots:/plots
+docker run --name chia -d ghcr.io/chia-network/chia:latest --expose=8444 -v /path/to/plots:/plots
 ```
 Syntax
 ```bash
