@@ -12,4 +12,6 @@ else
   chia start farmer
 fi
 
-tail -f ~/.chia/mainnet/log/debug.log
+# Ensures the log file actually exists, so we can tail successfully
+touch "$CHIA_ROOT/log/debug.log"
+tail -f "$CHIA_ROOT/log/debug.log"
