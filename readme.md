@@ -58,7 +58,7 @@ alternatively you can pass in your local keychain, if you have previously deploy
 -v ~/.local/share/python_keyring/:/root/.local/share/python_keyring/
 ```
 or if you would like to persist the entire mainnet subdirectory and not touch the key directories at all
-```
+```bash
 -v ~/.chia/mainnet:/root/.chia/mainnet -e keys="persistent"
 ```
 
@@ -156,6 +156,7 @@ docker exec -it chia-farmer1 venv/bin/chia wallet show
 ```
 
 ## Building
-```
+
+```bash
 docker build -t chia --build-arg BRANCH=latest .
 ```
