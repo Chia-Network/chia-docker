@@ -90,6 +90,12 @@ The `plots_dir` environment variable can be used to specify the directory contai
 
 Or, you can cimply mount `/plots` path to your host machine.
 
+### Log level
+To set the log level to one of CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
+```bash
+-e log_level="DEBUG"
+```
+
 ### Docker Compose
 
 ```yaml
