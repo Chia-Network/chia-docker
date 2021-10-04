@@ -109,19 +109,19 @@ services:
       - 8444:8444
     environment:
       # Farmer Only    
-#     - farmer="true"
+#     - farmer=true
       # Harvester Only
-#     - harvester="true"
-#     - farmer_address="192.168.0.10" 
-#     - farmer_port="8447"
-#     - ca="/path/in/container"
-#     - keys="copy"
+#     - harvester=true
+#     - farmer_address=192.168.0.10 
+#     - farmer_port=8447
+#     - ca=/path/in/container
+#     - keys=copy
       # Harvester Only END
       # If you would like to add keys manually via mnemonic file
-#     - keys="/path/in/container"
+#     - keys=/path/in/container
       # OR
       # Disable key generation on start
-#     - keys=""
+#     - keys=
       - TZ=${TZ}
     volumes:
       - /path/to/plots:/plots
