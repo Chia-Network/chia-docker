@@ -6,7 +6,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN chmod 1777 /tmp
 RUN apt-get update -q
-RUN apt-get upgrade -qy
 RUN apt-get install -qy --no-install-recommends \
   bc \
   ca-certificates \
@@ -43,7 +42,6 @@ COPY --from=install /chia-blockchain /chia-blockchain
 
 RUN chmod 1777 /tmp && \
     apt-get update -q && \
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade -qy && \
     python_version=$(ls /chia-blockchain/venv/lib) && \
     DEBIAN_FRONTEND=noninteractive apt-get install -qy --no-install-recommends \
       ${python_version}-distutils \
