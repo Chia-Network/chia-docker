@@ -44,8 +44,10 @@ COPY --from=install /chia-blockchain /chia-blockchain
 RUN chmod 1777 /tmp && \
     apt-get update -q && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -qy && \
+    python_version=$(ls /chia-blockchain/venv/lib) && \
     DEBIAN_FRONTEND=noninteractive apt-get install -qy --no-install-recommends \
-      python3.8-venv \
+      ${python_version}-distutils \
+      ${python_version}-venv \
       tzdata && \
     rm -rf /var/lib/apt/lists/*
 
