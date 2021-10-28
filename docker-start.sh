@@ -2,22 +2,22 @@
 
 # shellcheck disable=SC2154
 if [[ ${farmer} == 'true' ]]; then
-  chia start farmer-only
+  chives start farmer-only
 elif [[ ${harvester} == 'true' ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
-    chia start harvester
+    chives configure --set-farmer-peer "${farmer_address}:${farmer_port}"
+    chives start harvester
   fi
 else
-  chia start farmer
+  chives start farmer
 fi
 
-trap "chia stop all -d; exit 0" SIGINT SIGTERM
+trap "chives stop all -d; exit 0" SIGINT SIGTERM
 
 # Ensures the log file actually exists, so we can tail successfully
-touch "$CHIA_ROOT/log/debug.log"
-tail -f "$CHIA_ROOT/log/debug.log" &
+touch "$CHIVES_ROOT/log/debug.log"
+tail -f "$CHIVES_ROOT/log/debug.log" &
 while true; do sleep 1; done

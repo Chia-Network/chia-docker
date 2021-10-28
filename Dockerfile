@@ -1,9 +1,9 @@
 FROM ubuntu:latest
 
-EXPOSE 8555
-EXPOSE 8444
+EXPOSE 9755
+EXPOSE 9699
 
-ENV CHIA_ROOT=/root/.chia/mainnet
+ENV CHIVES_ROOT=/root/.chives/mainnet
 ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
@@ -18,19 +18,21 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteract
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
 
-ARG BRANCH=latest
+ARG BRANCH=V1.1.906
 
 RUN echo "cloning ${BRANCH}" && \
-    git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git && \
-    cd chia-blockchain && \
+    git clone --branch ${BRANCH} https://github.com/HiveProject2021/chives-blockchain.git && \
+    cd chives-blockchain && \
     git submodule update --init mozilla-ca && \
     /usr/bin/sh ./install.sh
 
-ENV PATH=/chia-blockchain/venv/bin:$PATH
-WORKDIR /chia-blockchain
+ENV PATH=/chives-blockchain/venv/bin:$PATH
+WORKDIR /chives-blockchain
 
 COPY docker-start.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/docker-start.sh && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["docker-start.sh"]
