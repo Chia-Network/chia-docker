@@ -42,6 +42,8 @@ for p in ${plots_dir//:/ }; do
     chia plots add -d "${p}"
 done
 
+chia configure --upnp "${upnp}"
+
 if [[ -n "${log_level}" ]]; then
   chia configure --log-level "${log_level}"
 fi
