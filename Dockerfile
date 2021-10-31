@@ -1,8 +1,13 @@
 FROM ubuntu:latest
 
-EXPOSE 9699 ## full_node_peer
-EXPOSE 9755 ## full_node rpc_port
-EXPOSE 9856 ## wallet rpc_port
+## full_node_peer
+EXPOSE 9699 
+
+## full_node rpc_port
+EXPOSE 9755
+
+ ## wallet rpc_port
+EXPOSE 9856
 
 ENV CHIVES_ROOT=/root/.chives/mainnet
 ENV keys="generate"
