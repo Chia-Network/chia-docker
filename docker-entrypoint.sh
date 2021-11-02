@@ -42,10 +42,16 @@ for p in ${plots_dir//:/ }; do
     chia plots add -d "${p}"
 done
 
+chia configure --upnp "${upnp}"
+
 if [[ -n "${log_level}" ]]; then
   chia configure --log-level "${log_level}"
 fi
 
 sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
+
+if [[ ${log_to_file} != 'true' ]]; then
+  sed -i 's/log_stdout: false/log_stdout: true/g' "$CHIA_ROOT/config/config.yaml"
+fi
 
 exec "$@"
