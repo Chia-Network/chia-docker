@@ -96,6 +96,18 @@ To set the log level to one of CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
 -e log_level="DEBUG"
 ```
 
+### UPnP
+To enable UPnP support (disabled by default)
+```bash
+-e upnp="true"
+```
+
+### Log to file
+To enable log file generation, which can be used by external tools like chiadog, etc...
+```bash
+-e log_to_file="true"
+```
+
 ### Docker Compose
 
 ```yaml
@@ -108,7 +120,7 @@ services:
     ports:
       - 8444:8444
     environment:
-      # Farmer Only    
+      # Farmer Only
 #     - farmer=true
       # Harvester Only
 #     - harvester=true
@@ -123,6 +135,10 @@ services:
       # Disable key generation on start
 #     - keys=
       - TZ=${TZ}
+      # Enable UPnP
+#     - upnp=true
+      # Enable log file generation
+#     - log_to_file=true
     volumes:
       - /path/to/plots:/plots
       - /home/user/.chia:/root/.chia
