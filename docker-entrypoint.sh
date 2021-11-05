@@ -52,6 +52,8 @@ sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
 
 if [[ ${log_to_file} != 'true' ]]; then
   sed -i 's/log_stdout: false/log_stdout: true/g' "$CHIA_ROOT/config/config.yaml"
+else
+  sed -i 's/log_stdout: true/log_stdout: false/g' "$CHIA_ROOT/config/config.yaml"
 fi
 
 exec "$@"
