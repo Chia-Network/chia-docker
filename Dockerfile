@@ -12,8 +12,8 @@ ENV farmer_address="null"
 ENV farmer_port="null"
 ENV testnet="false"
 ENV TZ="UTC"
-ENV upnp="false"
-ENV log_to_file="false"
+ENV upnp="true"
+ENV log_to_file="true"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y bc curl lsb-release python3 tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils python-is-python3 vim tzdata && \
     rm -rf /var/lib/apt/lists/* && \
