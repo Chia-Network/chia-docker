@@ -27,7 +27,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteract
 ARG BRANCH=V1.1.906
 
 RUN echo "cloning ${BRANCH}" && \
-    git clone --branch ${BRANCH} https://github.com/HiveProject2021/chives-blockchain.git && \
+    git clone --branch ${BRANCH} https://github.com/ChivesWorld/chives-blockchain.git && \
     cd chives-blockchain && \
     git submodule update --init mozilla-ca && \
     /usr/bin/sh ./install.sh
