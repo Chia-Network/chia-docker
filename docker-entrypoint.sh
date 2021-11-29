@@ -42,10 +42,18 @@ for p in ${plots_dir//:/ }; do
     chives plots add -d "${p}"
 done
 
+chives configure --upnp "${upnp}"
+
 if [[ -n "${log_level}" ]]; then
   chives configure --log-level "${log_level}"
 fi
 
 sed -i 's/localhost/127.0.0.1/g' "$CHIVES_ROOT/config/config.yaml"
+
+if [[ ${log_to_file} != 'true' ]]; then
+  sed -i 's/log_stdout: false/log_stdout: true/g' "$CHIVES_ROOT/config/config.yaml"
+else
+  sed -i 's/log_stdout: true/log_stdout: false/g' "$CHIVES_ROOT/config/config.yaml"
+fi
 
 exec "$@"

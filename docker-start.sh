@@ -16,8 +16,10 @@ else
 fi
 
 trap "chives stop all -d; exit 0" SIGINT SIGTERM
+if [[ ${log_to_file} == 'true' ]]; then
+  # Ensures the log file actually exists, so we can tail successfully
+  touch "$CHIVES_ROOT/log/debug.log"
+  tail -F "$CHIVES_ROOT/log/debug.log" &
+fi
 
-# Ensures the log file actually exists, so we can tail successfully
-touch "$CHIVES_ROOT/log/debug.log"
-tail -f "$CHIVES_ROOT/log/debug.log" &
 while true; do sleep 1; done
