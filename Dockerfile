@@ -1,12 +1,12 @@
 FROM ubuntu:latest
 
-## full_node_peer
+## full_node_peer (xch 8444)
 EXPOSE 9699 
 
-## full_node rpc_port
+## full_node rpc_port (xch 8555)
 EXPOSE 9755
 
- ## wallet rpc_port
+ ## wallet rpc_port [xch 9256]
 EXPOSE 9856
 
 ENV CHIVES_ROOT=/root/.chives/mainnet
