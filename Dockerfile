@@ -1,12 +1,12 @@
 FROM ubuntu:latest
 
-## full_node_peer
+## full_node_peer (xch 8444)
 EXPOSE 9699 
 
-## full_node rpc_port
+## full_node rpc_port (xch 8555)
 EXPOSE 9755
 
- ## wallet rpc_port
+ ## wallet rpc_port [xch 9256]
 EXPOSE 9856
 
 ENV CHIVES_ROOT=/root/.chives/mainnet
@@ -29,7 +29,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteract
 ARG BRANCH=V1.1.906
 
 RUN echo "cloning ${BRANCH}" && \
-    git clone --branch ${BRANCH} https://github.com/HiveProject2021/chives-blockchain.git && \
+    git clone --branch ${BRANCH} https://github.com/ChivesWorld/chives-blockchain.git && \
     cd chives-blockchain && \
     git submodule update --init mozilla-ca && \
     /usr/bin/sh ./install.sh
