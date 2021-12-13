@@ -21,8 +21,7 @@ EXPOSE 8555 8444
 
 ENV CHIA_ROOT=/root/.chia/mainnet
 ENV keys="generate"
-ENV harvester="false"
-ENV farmer="false"
+ENV service="farmer"
 ENV plots_dir="/plots"
 ENV farmer_address=
 ENV farmer_port=
@@ -30,6 +29,10 @@ ENV testnet="false"
 ENV TZ="UTC"
 ENV upnp="true"
 ENV log_to_file="true"
+
+# Deprecated legacy options
+ENV harvester="false"
+ENV farmer="false"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y tzdata && \
