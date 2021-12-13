@@ -14,8 +14,8 @@ cd /chia-blockchain || exit 1
 chia init --fix-ssl-permissions
 
 if [[ ${testnet} == 'true' ]]; then
-   echo "configure testnet"
-   chia configure --testnet true
+  echo "configure testnet"
+  chia configure --testnet true
 fi
 
 if [[ ${keys} == "persistent" ]]; then
@@ -26,7 +26,7 @@ elif [[ ${keys} == "generate" ]]; then
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
-	exit
+    exit
   else
   chia init -c "${ca}"
   fi
@@ -35,11 +35,11 @@ else
 fi
 
 for p in ${plots_dir//:/ }; do
-    mkdir -p "${p}"
-    if [[ ! $(ls -A "$p") ]]; then
-        echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
-    fi
-    chia plots add -d "${p}"
+  mkdir -p "${p}"
+  if [[ ! $(ls -A "$p") ]]; then
+    echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
+  fi
+  chia plots add -d "${p}"
 done
 
 chia configure --upnp "${upnp}"
