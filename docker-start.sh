@@ -8,7 +8,6 @@ elif [[ ${harvester} == 'true' ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
     chia start harvester
   fi
 else

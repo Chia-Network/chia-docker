@@ -48,6 +48,10 @@ if [[ -n "${log_level}" ]]; then
   chia configure --log-level "${log_level}"
 fi
 
+if [[ -n ${farmer_address} && -n ${farmer_port} ]]; then
+  chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
+fi
+
 sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
 
 if [[ ${log_to_file} != 'true' ]]; then
