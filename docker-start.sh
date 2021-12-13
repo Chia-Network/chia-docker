@@ -15,7 +15,7 @@ else
   chia start farmer
 fi
 
-trap "chia stop all -d; exit 0" SIGINT SIGTERM
+trap "echo Shutting down ...; chia stop all -d; exit 0" SIGINT SIGTERM
 
 if [[ ${log_to_file} == 'true' ]]; then
   # Ensures the log file actually exists, so we can tail successfully
