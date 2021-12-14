@@ -124,7 +124,7 @@ services:
 #     - farmer=true
       # Harvester Only
 #     - harvester=true
-#     - farmer_address=192.168.0.10 
+#     - farmer_address=192.168.0.10
 #     - farmer_port=8447
 #     - ca=/path/in/container
 #     - keys=copy

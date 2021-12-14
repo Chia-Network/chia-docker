@@ -8,14 +8,13 @@ elif [[ ${harvester} == 'true' ]]; then
     echo "A farmer peer address, port, and ca path are required."
     exit
   else
-    chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
     chia start harvester
   fi
 else
   chia start farmer
 fi
 
-trap "chia stop all -d; exit 0" SIGINT SIGTERM
+trap "echo Shutting down ...; chia stop all -d; exit 0" SIGINT SIGTERM
 
 if [[ ${log_to_file} == 'true' ]]; then
   # Ensures the log file actually exists, so we can tail successfully
