@@ -77,7 +77,7 @@ To start a farmer only node pass
 -e farmer="true"
 ```
 
-### Harverster only
+### Harvester only
 
 To start a harvester only node pass
 ```bash
@@ -88,7 +88,7 @@ To start a harvester only node pass
 
 The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
 
-Or, you can cimply mount `/plots` path to your host machine.
+Or, you can simply mount `/plots` path to your host machine.
 
 ### Log level
 To set the log level to one of CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
