@@ -1,8 +1,6 @@
 # CHIA BUILD STEP
 FROM python:3.9 AS chia_build
 
-RUN dpkg-reconfigure -f noninteractive tzdata
-
 ARG BRANCH=latest
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
