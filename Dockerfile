@@ -7,15 +7,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
         lsb-release sudo
 
-RUN echo "cloning ${BRANCH}" && \
-    git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git 
-
 WORKDIR /chia-blockchain
 
-RUN git submodule update --init mozilla-ca
-
-RUN echo "running build-script" && \
-    /bin/sh install.sh
+RUN echo "cloning ${BRANCH}" && \
+    git clone --branch ${BRANCH} --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git . && \
+    echo "running build-script" && \
+    /bin/sh ./install.sh
 
 # IMAGE BUILD
 FROM python:3.9-slim
