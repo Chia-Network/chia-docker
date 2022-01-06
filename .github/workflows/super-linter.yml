@@ -26,3 +26,4 @@ jobs:
           VALIDATE_NATURAL_LANGUAGE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_DOCKERFILE_HADOLINT: false # Breaks CI by trying to validate things that aren't dockerfiles
