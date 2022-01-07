@@ -74,21 +74,21 @@ You can persist whole db and configuration, simply mount it to Host.
 
 To start a farmer only node pass
 ```bash
--e farmer="true"
+-e service="farmer-only"
 ```
 
-### Harverster only
+### Harvester only
 
 To start a harvester only node pass
 ```bash
--e harvester="true" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
+-e service="harvester" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
 ```
 
 ### Plots
 
 The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
 
-Or, you can cimply mount `/plots` path to your host machine.
+Or, you can simply mount `/plots` path to your host machine.
 
 ### Log level
 To set the log level to one of CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
@@ -121,9 +121,9 @@ services:
       - 8444:8444
     environment:
       # Farmer Only
-#     - farmer=true
+#     - service=farmer-only
       # Harvester Only
-#     - harvester=true
+#     - service=harvester
 #     - farmer_address=192.168.0.10
 #     - farmer_port=8447
 #     - ca=/path/in/container

@@ -60,4 +60,18 @@ else
   sed -i 's/log_stdout: true/log_stdout: false/g' "$CHIA_ROOT/config/config.yaml"
 fi
 
+# Map deprecated legacy startup options.
+if [[ ${farmer} == "true" ]]; then
+  service="farmer-only"
+elif [[ ${harvester} == "true" ]]; then
+  service="harvester"
+fi
+
+if [[ ${service} == "harvester" ]]; then
+  if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
+    echo "A farmer peer address, port, and ca path are required."
+    exit
+  fi
+fi
+
 exec "$@"
