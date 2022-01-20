@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: "main"
+
 jobs:
   docker_build_and_publish_github:
     runs-on: ubuntu-latest
