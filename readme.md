@@ -96,6 +96,18 @@ To set the log level to one of CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
 -e log_level="DEBUG"
 ```
 
+### Peer Count
+To set the peer_count and outbound_peer_count
+
+for example to set both to 20 use
+```bash
+-e peer_count="20"
+```
+
+```bash
+-e outbound_peer_count="20"
+```
+
 ### UPnP
 To enable UPnP support (disabled by default)
 ```bash

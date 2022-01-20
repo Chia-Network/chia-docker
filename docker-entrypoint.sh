@@ -48,6 +48,14 @@ if [[ -n "${log_level}" ]]; then
   chia configure --log-level "${log_level}"
 fi
 
+if [[ -n "${peer_count}" ]]; then
+  chia configure --set-peer-count "${peer_count}"
+fi
+
+if [[ -n "${outbound_peer_count}" ]]; then
+  chia configure --set_outbound-peer-count "${outbound_peer_count}"
+fi
+
 if [[ -n ${farmer_address} && -n ${farmer_port} ]]; then
   chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
 fi
