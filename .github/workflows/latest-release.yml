@@ -1,10 +1,13 @@
-name: Build Main
+name: Build Latest Release
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
+concurrency:
+  group: "latest"
 
 jobs:
   docker_build_and_publish_github:
