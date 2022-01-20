@@ -1,4 +1,4 @@
-name: Build Main
+name: Build Chia Main Branch
 
 on:
   push:
@@ -32,19 +32,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PAT }}
 
-      # Get the most recent release from chia-blockchain and build that
-      - uses: actions/github-script@v4
-        id: 'latest-tag'
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: string
-          script: |
-            const releases = await github.repos.listReleases({
-              owner: 'Chia-Network',
-              repo: 'chia-blockchain',
-            });
-            return releases.data[0].tag_name;
-
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
@@ -53,8 +40,7 @@ jobs:
             ghcr.io/chia-network/chia
             chianetwork/chia-docker
           tags: |
-            type=raw,value=latest
-            type=raw,value=${{ steps.latest-tag.outputs.result }}
+            type=raw,value=main
 
       - name: Build docker image and push to github packages
         uses: docker/build-push-action@v2
@@ -64,5 +50,5 @@ jobs:
           no-cache: true
           push: true
           build-args: |
-            "BRANCH=${{ steps.latest-tag.outputs.result }}"
+            "BRANCH=main"
           tags: ${{ steps.meta.outputs.tags }}
