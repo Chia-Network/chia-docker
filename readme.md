@@ -194,3 +194,37 @@ docker exec -it chia-farmer1 venv/bin/chia wallet show
 ```bash
 docker build -t chia --build-arg BRANCH=latest .
 ```
+
+## Healthchecks
+
+The Dockerfile includes a HEALTHCHECK instruction that runs a curl command against the Chia RPC API. In Docker, this can be disabled using the `--no-healthcheck` flag in the `docker run` command. Or in docker-compose you can add it to your Chia service, like so:
+
+```yaml
+version: "3.6"
+services:
+  chia:
+    ...
+    healthcheck:
+      disable: true
+```
+
+In Kubernetes, Docker healthchecks are disabled by default. Instead, readiness and liveness probes should be used, which can be configured in a Pod or Deployment manifest file like the following:
+
+```yaml
+livenessProbe:
+  exec:
+    command:
+    - /bin/sh
+    - -c
+    - 'curl -k -f --cert ${CHIA_ROOT}/config/ssl/full_node/private_full_node.crt --key ${CHIA_ROOT}/config/ssl/full_node/private_full_node.key -d "{}" -H "Content-Type: application/json" https://localhost:8555/get_network_info'
+  initialDelaySeconds: 600
+readinessProbe:
+  exec:
+    command:
+    - /bin/sh
+    - -c
+    - 'curl -k -f --cert ${CHIA_ROOT}/config/ssl/full_node/private_full_node.crt --key ${CHIA_ROOT}/config/ssl/full_node/private_full_node.key -d "{}" -H "Content-Type: application/json" https://localhost:8555/get_network_info'
+  initialDelaySeconds: 600
+```
+
+See [Configure Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for more information about configuring readiness and liveness probes for Kubernetes clusters.
