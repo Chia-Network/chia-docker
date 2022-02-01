@@ -197,7 +197,7 @@ docker build -t chia --build-arg BRANCH=latest .
 
 ## Healthchecks
 
-The Dockerfile includes a HEALTHCHECK instruction that runs a curl command against the the Chia RPC API. In Docker, this can be disabled using the `--no-healthcheck` flag in the `docker run` command. Or in docker-compose you can add it to your Chia service, like so:
+The Dockerfile includes a HEALTHCHECK instruction that runs a curl command against the Chia RPC API. In Docker, this can be disabled using the `--no-healthcheck` flag in the `docker run` command. Or in docker-compose you can add it to your Chia service, like so:
 
 ```yaml
 version: "3.6"
