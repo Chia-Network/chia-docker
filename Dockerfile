@@ -48,7 +48,7 @@ WORKDIR /chia-blockchain
 COPY docker-start.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
 
-HEALTHCHECK --interval=1m --timeout=3s --start-period=10m \
+HEALTHCHECK --interval=1m --timeout=3s --start-period=30m \
   CMD curl -X POST \
       --cert ${CHIA_ROOT}/config/ssl/full_node/private_full_node.crt \
       --key ${CHIA_ROOT}/config/ssl/full_node/private_full_node.key \
