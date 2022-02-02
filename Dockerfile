@@ -35,7 +35,7 @@ ENV harvester="false"
 ENV farmer="false"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y tzdata curl && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y tzdata && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
@@ -47,12 +47,6 @@ WORKDIR /chia-blockchain
 
 COPY docker-start.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
-
-HEALTHCHECK --interval=1m --timeout=3s --start-period=30m \
-  CMD curl -X POST \
-      --cert ${CHIA_ROOT}/config/ssl/full_node/private_full_node.crt \
-      --key ${CHIA_ROOT}/config/ssl/full_node/private_full_node.key \
-      -d '{}' -k -H "Content-Type: application/json" https://localhost:8555/get_network_info || exit 1
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["docker-start.sh"]
