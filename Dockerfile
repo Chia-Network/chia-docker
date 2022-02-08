@@ -35,7 +35,7 @@ ENV harvester="false"
 ENV farmer="false"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y tzdata && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y tzdata curl && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
