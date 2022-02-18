@@ -38,7 +38,7 @@ jobs:
           images: |
             ghcr.io/chia-network/chia
           tags: |
-            type=sha,format=long
+            type=raw,value=${{ github.event.inputs.sha }}
 
       - name: Build docker image and push to github packages
         uses: docker/build-push-action@v2
