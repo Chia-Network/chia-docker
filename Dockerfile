@@ -2,6 +2,7 @@
 FROM python:3.9 AS chia_build
 
 ARG BRANCH=latest
+ARG COMMIT=""
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
@@ -11,6 +12,8 @@ WORKDIR /chia-blockchain
 
 RUN echo "cloning ${BRANCH}" && \
     git clone --branch ${BRANCH} --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git . && \
+    # If COMMIT is set, check out that commit, otherwise just continue
+    ( [ ! -z "$COMMIT" ] && git checkout $COMMIT ) || true && \
     echo "running build-script" && \
     /bin/sh ./install.sh
 
