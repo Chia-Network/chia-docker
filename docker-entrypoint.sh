@@ -60,6 +60,14 @@ if [[ -n ${farmer_address} && -n ${farmer_port} ]]; then
   chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
 fi
 
+if [[ -n ${crawler_db_path} ]]; then
+  chia configure --crawler-db-path "${crawler_db_path}"
+fi
+
+if [[ -n ${crawler_minimum_version_count} ]]; then
+  chia configure --crawler-minimum-version-count "${crawler_minimum_version_count}"
+fi
+
 sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
 
 if [[ ${log_to_file} != 'true' ]]; then
