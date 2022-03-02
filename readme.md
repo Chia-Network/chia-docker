@@ -11,7 +11,7 @@ docker run --name chia -d ghcr.io/chia-network/chia:latest --expose=8444 -v /pat
 ```
 Syntax
 ```bash
-docker run --name <container-name> -d ghcr.io/chia-network/chia:latest 
+docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
 optional accept incoming connections: --expose=8444
 optional: -v /path/to/plots:/plots
 ```
@@ -45,11 +45,11 @@ Timezones can be configured using the `TZ` env variable. A list of supported tim
 
 ### Add your custom keys
 
-To use your own keys pass as arguments on startup (post 1.0.2 pre 1.0.2 must manually pass as shown below)
+To use your own keys pass a file with your mnemonic as arguments on startup
 ```bash
 -v /path/to/key/file:/path/in/container -e keys="/path/in/container"
 ```
-or pass keys into the running container
+or pass keys into the running container with your mnemonic
 ```bash
 docker exec -it <container-name> venv/bin/chia keys add
 ```
