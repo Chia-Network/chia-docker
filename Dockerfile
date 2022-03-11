@@ -32,6 +32,7 @@ ENV testnet="false"
 ENV TZ="UTC"
 ENV upnp="true"
 ENV log_to_file="true"
+ENV healthcheck="true"
 
 # Deprecated legacy options
 ENV harvester="false"
@@ -50,6 +51,10 @@ WORKDIR /chia-blockchain
 
 COPY docker-start.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
+COPY docker-healthcheck.sh /usr/local/bin/
+
+HEALTHCHECK --interval=1m --timeout=10s --start-period=20m \
+  CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["docker-start.sh"]
