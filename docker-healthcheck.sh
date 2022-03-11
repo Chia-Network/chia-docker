@@ -4,6 +4,14 @@ if [[ ${healthcheck} != "true" ]]; then
     exit 0
 fi
 
+logger () {
+    if [[ ${log_to_file} != 'true' ]]; then
+        echo "$1" >> /proc/1/fd/1
+    else
+        echo "$1" >> "${CHIA_ROOT}/log/debug.log"
+    fi
+}
+
 # Set default to false for all components
 # Gets reset to true individually depending on ${service} variable
 node_check=false
@@ -52,7 +60,7 @@ if [[ ${node_check} == "true" ]]; then
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8555/get_routes
     
     if [[ "$?" -ne 0 ]]; then
-        echo "$(date -u) Node healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
+        logger "$(date -u) Node healthcheck failed"
         exit 1
     fi
 fi
@@ -64,7 +72,7 @@ if [[ ${farmer_check} == "true" ]]; then
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8559/get_routes
     
     if [[ "$?" -ne 0 ]]; then
-        echo "$(date -u) Farmer healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
+        logger "$(date -u) Farmer healthcheck failed"
         exit 1
     fi
 fi
@@ -76,7 +84,7 @@ if [[ ${harvester_check} == "true" ]]; then
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8560/get_routes
     
     if [[ "$?" -ne 0 ]]; then
-        echo "$(date -u) Harvester healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
+        logger "$(date -u) Harvester healthcheck failed"
         exit 1
     fi
 fi
@@ -88,9 +96,9 @@ if [[ ${wallet_check} == "true" ]]; then
       -d '{}' -k -H "Content-Type: application/json" https://localhost:9256/get_routes
     
     if [[ "$?" -ne 0 ]]; then
-        echo "$(date -u) Wallet healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
+        logger "$(date -u) Wallet healthcheck failed"
         exit 1
     fi
 fi
 
-echo "$(date -u) Healthcheck(s) completed successfully" >> "${CHIA_ROOT}/log/debug.log"
+logger "$(date -u) Healthcheck(s) completed successfully"
