@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# shellcheck disable=SC2154
 if [[ ${healthcheck} != "true" ]]; then
     exit 0
 fi
 
 logger () {
+    # shellcheck disable=SC2154
     if [[ ${log_to_file} != 'true' ]]; then
         echo "$1" >> /proc/1/fd/1
     else
@@ -20,6 +22,7 @@ harvester_check=false
 wallet_check=false
 
 # Determine which services to healthcheck based on ${service}
+# shellcheck disable=SC2154
 case "${service}" in
     all)
         node_check=true
