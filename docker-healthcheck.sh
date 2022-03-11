@@ -62,6 +62,7 @@ if [[ ${node_check} == "true" ]]; then
       --key "${CHIA_ROOT}/config/ssl/full_node/private_full_node.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8555/get_routes
     
+    # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
         logger "$(date -u) Node healthcheck failed"
         exit 1
@@ -74,6 +75,7 @@ if [[ ${farmer_check} == "true" ]]; then
       --key "${CHIA_ROOT}/config/ssl/farmer/private_farmer.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8559/get_routes
     
+    # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
         logger "$(date -u) Farmer healthcheck failed"
         exit 1
@@ -86,6 +88,7 @@ if [[ ${harvester_check} == "true" ]]; then
       --key "${CHIA_ROOT}/config/ssl/harvester/private_harvester.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8560/get_routes
     
+    # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
         logger "$(date -u) Harvester healthcheck failed"
         exit 1
@@ -98,6 +101,7 @@ if [[ ${wallet_check} == "true" ]]; then
       --key "${CHIA_ROOT}/config/ssl/wallet/private_wallet.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:9256/get_routes
     
+    # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
         logger "$(date -u) Wallet healthcheck failed"
         exit 1
