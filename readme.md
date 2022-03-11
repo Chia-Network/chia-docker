@@ -194,3 +194,37 @@ docker exec -it chia-farmer1 venv/bin/chia wallet show
 ```bash
 docker build -t chia --build-arg BRANCH=latest .
 ```
+
+## Healthchecks
+
+The Dockerfile includes a HEALTHCHECK instruction that runs one or more curl commands against the Chia RPC API. In Docker, this can be disabled using an environment variable `-e healthcheck=false` as part of the `docker run` command. Or in docker-compose you can add it to your Chia service, like so:
+
+```yaml
+version: "3.6"
+services:
+  chia:
+    ...
+    environment:
+      healthcheck: "false"
+```
+
+In Kubernetes, Docker healthchecks are disabled by default. Instead, readiness and liveness probes should be used, which can be configured in a Pod or Deployment manifest file like the following:
+
+```yaml
+livenessProbe:
+  exec:
+    command:
+    - /bin/sh
+    - -c
+    - '/usr/local/bin/docker-healthcheck.sh || exit 1'
+  initialDelaySeconds: 60
+readinessProbe:
+  exec:
+    command:
+    - /bin/sh
+    - -c
+    - '/usr/local/bin/docker-healthcheck.sh || exit 1'
+  initialDelaySeconds: 60
+```
+
+See [Configure Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for more information about configuring readiness and liveness probes for Kubernetes clusters. The `initialDelaySeconds` parameter may need to be adjusted higher or lower depending on the speed to start up on the host the container is running on.
