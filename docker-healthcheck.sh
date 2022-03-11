@@ -40,10 +40,6 @@ case "${service}" in
         farmer_check=true
     ;;
     wallet)
-        node_check=true
-        wallet_check=true
-    ;;
-    wallet-only)
         wallet_check=true
     ;;
 esac
@@ -53,7 +49,7 @@ if [[ ${node_check} == "true" ]]; then
     curl -X POST --fail \
       --cert "${CHIA_ROOT}/config/ssl/full_node/private_full_node.crt" \
       --key "${CHIA_ROOT}/config/ssl/full_node/private_full_node.key" \
-      -d '{}' -k -H "Content-Type: application/json" https://localhost:8555/get_network_info
+      -d '{}' -k -H "Content-Type: application/json" https://localhost:8555/get_routes
     
     if [[ "$?" -ne 0 ]]; then
         echo "$(date -u) Node healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
@@ -65,7 +61,7 @@ if [[ ${farmer_check} == "true" ]]; then
     curl -X POST --fail \
       --cert "${CHIA_ROOT}/config/ssl/farmer/private_farmer.crt" \
       --key "${CHIA_ROOT}/config/ssl/farmer/private_farmer.key" \
-      -d '{}' -k -H "Content-Type: application/json" https://localhost:8559/get_pool_state
+      -d '{}' -k -H "Content-Type: application/json" https://localhost:8559/get_routes
     
     if [[ "$?" -ne 0 ]]; then
         echo "$(date -u) Farmer healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
@@ -77,7 +73,7 @@ if [[ ${harvester_check} == "true" ]]; then
     curl -X POST --fail \
       --cert "${CHIA_ROOT}/config/ssl/harvester/private_harvester.crt" \
       --key "${CHIA_ROOT}/config/ssl/harvester/private_harvester.key" \
-      -d '{}' -k -H "Content-Type: application/json" https://localhost:8560/get_plot_directories
+      -d '{}' -k -H "Content-Type: application/json" https://localhost:8560/get_routes
     
     if [[ "$?" -ne 0 ]]; then
         echo "$(date -u) Harvester healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
@@ -89,7 +85,7 @@ if [[ ${wallet_check} == "true" ]]; then
     curl -X POST --fail \
       --cert "${CHIA_ROOT}/config/ssl/wallet/private_wallet.crt" \
       --key "${CHIA_ROOT}/config/ssl/wallet/private_wallet.key" \
-      -d '{}' -k -H "Content-Type: application/json" https://localhost:9256/get_height_info
+      -d '{}' -k -H "Content-Type: application/json" https://localhost:9256/get_routes
     
     if [[ "$?" -ne 0 ]]; then
         echo "$(date -u) Wallet healthcheck failed" >> "${CHIA_ROOT}/log/debug.log"
