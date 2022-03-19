@@ -109,15 +109,17 @@ for example to set both to 20 use
 ```
 
 ### UPnP
-To enable UPnP support (disabled by default)
+To disable UPnP support (enabled by default)
 ```bash
--e upnp="true"
+-e upnp="false"
 ```
 
 ### Log to file
-To enable log file generation, which can be used by external tools like chiadog, etc...
+Log file can be used by external tools like chiadog, etc. Enabled by default.
+
+To disable log file generation, use
 ```bash
--e log_to_file="true"
+-e log_to_file="false"
 ```
 
 ### Docker Compose
