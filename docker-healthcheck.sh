@@ -22,38 +22,42 @@ harvester_check=false
 wallet_check=false
 
 # Determine which services to healthcheck based on ${service}
-# shellcheck disable=SC2154
-case "${service}" in
-    all)
-        node_check=true
-        farmer_check=true
-        harvester_check=true
-        wallet_check=true
-    ;;
-    node)
-        node_check=true
-    ;;
-    harvester)
-        harvester_check=true
-    ;;
-    farmer)
-        node_check=true
-        farmer_check=true
-        harvester_check=true
-        wallet_check=true
-    ;;
-    farmer-no-wallet)
-        node_check=true
-        farmer_check=true
-        harvester_check=true
-    ;;
-    farmer-only)
-        farmer_check=true
-    ;;
-    wallet)
-        wallet_check=true
-    ;;
-esac
+# shellcheck disable=SC2154,SC2206
+services_array=($service)
+for option in "${services_array[@]}"
+do
+    case "${option}" in
+        all)
+            node_check=true
+            farmer_check=true
+            harvester_check=true
+            wallet_check=true
+        ;;
+        node)
+            node_check=true
+        ;;
+        harvester)
+            harvester_check=true
+        ;;
+        farmer)
+            node_check=true
+            farmer_check=true
+            harvester_check=true
+            wallet_check=true
+        ;;
+        farmer-no-wallet)
+            node_check=true
+            farmer_check=true
+            harvester_check=true
+        ;;
+        farmer-only)
+            farmer_check=true
+        ;;
+        wallet)
+            wallet_check=true
+        ;;
+    esac
+done
 
 
 if [[ ${node_check} == "true" ]]; then
