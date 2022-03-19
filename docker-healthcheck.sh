@@ -5,6 +5,10 @@ if [[ ${healthcheck} != "true" ]]; then
     exit 0
 fi
 
+dt () {
+    date +%FT%T.%3N
+}
+
 logger () {
     # shellcheck disable=SC2154
     if [[ ${log_to_file} != 'true' ]]; then
@@ -61,10 +65,10 @@ if [[ ${node_check} == "true" ]]; then
       --cert "${CHIA_ROOT}/config/ssl/full_node/private_full_node.crt" \
       --key "${CHIA_ROOT}/config/ssl/full_node/private_full_node.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8555/get_routes
-    
+
     # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
-        logger "$(date -u) Node healthcheck failed"
+        logger "$(dt) Node healthcheck failed"
         exit 1
     fi
 fi
@@ -74,10 +78,10 @@ if [[ ${farmer_check} == "true" ]]; then
       --cert "${CHIA_ROOT}/config/ssl/farmer/private_farmer.crt" \
       --key "${CHIA_ROOT}/config/ssl/farmer/private_farmer.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8559/get_routes
-    
+
     # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
-        logger "$(date -u) Farmer healthcheck failed"
+        logger "$(dt) Farmer healthcheck failed"
         exit 1
     fi
 fi
@@ -87,10 +91,10 @@ if [[ ${harvester_check} == "true" ]]; then
       --cert "${CHIA_ROOT}/config/ssl/harvester/private_harvester.crt" \
       --key "${CHIA_ROOT}/config/ssl/harvester/private_harvester.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:8560/get_routes
-    
+
     # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
-        logger "$(date -u) Harvester healthcheck failed"
+        logger "$(dt) Harvester healthcheck failed"
         exit 1
     fi
 fi
@@ -100,12 +104,12 @@ if [[ ${wallet_check} == "true" ]]; then
       --cert "${CHIA_ROOT}/config/ssl/wallet/private_wallet.crt" \
       --key "${CHIA_ROOT}/config/ssl/wallet/private_wallet.key" \
       -d '{}' -k -H "Content-Type: application/json" https://localhost:9256/get_routes
-    
+
     # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
-        logger "$(date -u) Wallet healthcheck failed"
+        logger "$(dt) Wallet healthcheck failed"
         exit 1
     fi
 fi
 
-logger "$(date -u) Healthcheck(s) completed successfully"
+logger "$(dt) Healthcheck(s) completed successfully"
