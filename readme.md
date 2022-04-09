@@ -135,24 +135,24 @@ services:
       - 8444:8444
     environment:
       # Farmer Only
-#     - service=farmer-only
+#     service: farmer-only
       # Harvester Only
-#     - service=harvester
-#     - farmer_address=192.168.0.10
-#     - farmer_port=8447
-#     - ca=/path/in/container
-#     - keys=copy
+#     service: harvester
+#     farmer_address: 192.168.0.10
+#     farmer_port: 8447
+#     ca: /path/in/container
+#     keys: copy
       # Harvester Only END
       # If you would like to add keys manually via mnemonic file
-#     - keys=/path/in/container
+#     keys: /path/in/container
       # OR
       # Disable key generation on start
-#     - keys=
-      - TZ=${TZ}
+#     keys: 
+      TZ: ${TZ}
       # Enable UPnP
-#     - upnp=true
+#     upnp: true
       # Enable log file generation
-#     - log_to_file=true
+#     log_to_file: true
     volumes:
       - /path/to/plots:/plots
       - /home/user/.chia:/root/.chia
