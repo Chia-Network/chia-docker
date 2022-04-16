@@ -68,6 +68,11 @@ if [[ -n ${crawler_minimum_version_count} ]]; then
   chia configure --crawler-minimum-version-count "${crawler_minimum_version_count}"
 fi
 
+if [[ -n ${self_hostname} ]]; then
+  sed -i "s/self_hostname: localhost/self_hostname: $self_hostname/g" "$CHIA_ROOT/config/config.yaml"
+fi
+
+# TODO: Document why this is needed
 sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
 
 if [[ ${log_to_file} != 'true' ]]; then
