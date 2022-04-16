@@ -36,7 +36,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/chia-network/chia
+            ghcr.io/chia-network/chia-dev
           tags: |
             type=raw,value=${{ github.event.inputs.sha }}
 
