@@ -1,7 +1,7 @@
 # CHIA BUILD STEP
 FROM python:3.9 AS chia_build
 
-ARG BRANCH=latest
+ARG BRANCH=add-missing-libgmp-dependency-bladebit
 ARG COMMIT=""
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
@@ -38,8 +38,12 @@ ENV healthcheck="true"
 ENV harvester="false"
 ENV farmer="false"
 
+# Minimal list of software dependencies
+#   sudo: Needed for alternative plotter install
+#   tzdata: Setting the timezone
+#   curl: Health-checks
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y tzdata curl && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
