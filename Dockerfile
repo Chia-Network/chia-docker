@@ -1,7 +1,7 @@
 # CHIA BUILD STEP
 FROM python:3.9 AS chia_build
 
-ARG BRANCH=add-missing-libgmp-dependency-bladebit
+ARG BRANCH=latest
 ARG COMMIT=""
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
