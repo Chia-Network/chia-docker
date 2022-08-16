@@ -63,11 +63,12 @@ or if you would like to persist the entire mainnet subdirectory and not touch th
 ```
 
 
-### Persist configuration and db
+### Persist configuration, db, and keyring
 
 You can persist whole db and configuration, simply mount it to Host.
 ```bash
--v ~/.chia:/root/.chia
+-v ~/.chia:/root/.chia \
+-v ~/.chia_keys:/root/.chia_keys
 ```
 
 ### Farmer only
