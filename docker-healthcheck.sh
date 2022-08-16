@@ -116,4 +116,7 @@ if [[ ${wallet_check} == "true" ]]; then
     fi
 fi
 
-logger "$(dt) Healthcheck(s) completed successfully"
+# shellcheck disable=SC2154
+if [[ ${log_level} == 'INFO' ]]; then
+    logger "$(dt) Healthcheck(s) completed successfully"
+fi
