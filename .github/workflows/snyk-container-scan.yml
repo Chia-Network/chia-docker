@@ -14,9 +14,6 @@
 name: Snyk Container
 
 on:
-  push:
-    branch:
-    - "*"
   workflow_dispatch:
   schedule:
     - cron: '0 8 * * *'
