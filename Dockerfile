@@ -52,7 +52,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata && \
     groupadd -g "${GID}" chia && \
     useradd -m -u "${UID}" -g "${GID}" chia && \
-    chown -R chia:chia /home/chia
+    mkdir /plots && \
+    chown -R chia:chia /home/chia /plots
 
 COPY --chown=chia:chia --from=chia_build /chia-blockchain /chia-blockchain
 
