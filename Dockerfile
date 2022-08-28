@@ -60,9 +60,7 @@ COPY --chown=chia:chia --from=chia_build /chia-blockchain /chia-blockchain
 ENV PATH=/chia-blockchain/venv/bin:$PATH
 WORKDIR /chia-blockchain
 
-COPY docker-start.sh /usr/local/bin/
-COPY docker-entrypoint.sh /usr/local/bin/
-COPY docker-healthcheck.sh /usr/local/bin/
+COPY docker-start.sh docker-entrypoint.sh docker-healthcheck.sh /usr/local/bin/
 
 HEALTHCHECK --interval=1m --timeout=10s --start-period=20m \
   CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
