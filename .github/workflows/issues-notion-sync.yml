@@ -17,6 +17,9 @@ on:
         closed,
       ]
 
+concurrency:
+  group: "notion-sync"
+
 jobs:
   notion_job:
     runs-on: ubuntu-latest
