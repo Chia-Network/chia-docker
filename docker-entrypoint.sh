@@ -31,7 +31,7 @@ elif [[ ${keys} == "copy" ]]; then
   chia init -c "${ca}"
   fi
 else
-  chia keys add -f "${keys}"
+  chia keys add -f "${keys}" -l ""
 fi
 
 for p in ${plots_dir//:/ }; do
