@@ -15,7 +15,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
           script: |
-            const release = await github.repos.GetLatestRelease({
+            const release = await github.rest.repos.GetLatestRelease({
               owner: 'Chia-Network',
               repo: 'chia-blockchain',
             });
