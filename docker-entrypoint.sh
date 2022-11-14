@@ -22,7 +22,7 @@ if [[ ${keys} == "persistent" ]]; then
   echo "Not touching key directories"
 elif [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass the mnemonic as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  chia keys generate
+  chia keys generate -l ""
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
