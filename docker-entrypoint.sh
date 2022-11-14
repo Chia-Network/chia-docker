@@ -22,7 +22,7 @@ if [[ ${keys} == "persistent" ]]; then
   echo "Not touching key directories"
 elif [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass the mnemonic as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  chia keys generate
+  chia keys generate -l ""
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
@@ -41,6 +41,12 @@ for p in ${plots_dir//:/ }; do
   fi
   chia plots add -d "${p}"
 done
+
+if [[ ${recursive_plot_scan} == 'true' ]]; then
+  sed -i 's/recursive_plot_scan: false/recursive_plot_scan: true/g' "$CHIA_ROOT/config/config.yaml"
+else
+  sed -i 's/recursive_plot_scan: true/recursive_plot_scan: false/g' "$CHIA_ROOT/config/config.yaml"
+fi
 
 chia configure --upnp "${upnp}"
 
