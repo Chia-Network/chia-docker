@@ -42,6 +42,12 @@ for p in ${plots_dir//:/ }; do
   chia plots add -d "${p}"
 done
 
+if [[ ${recursive_plot_scan} == 'true' ]]; then
+  sed -i 's/recursive_plot_scan: false/recursive_plot_scan: true/g' "$CHIA_ROOT/config/config.yaml"
+else
+  sed -i 's/recursive_plot_scan: true/recursive_plot_scan: false/g' "$CHIA_ROOT/config/config.yaml"
+fi
+
 chia configure --upnp "${upnp}"
 
 if [[ -n "${log_level}" ]]; then

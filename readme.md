@@ -91,6 +91,8 @@ The `plots_dir` environment variable can be used to specify the directory contai
 
 Or, you can simply mount `/plots` path to your host machine.
 
+Set the environment variable `recursive_plot_scan` to `true` to enable the recursive plot scan configuration option.
+
 ### Log level
 To set the log level to one of CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
 ```bash
