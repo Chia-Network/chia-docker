@@ -18,11 +18,14 @@ RUN echo "cloning ${BRANCH}" && \
     /bin/sh ./install.sh
 
 # IMAGE BUILD
-FROM python:3.9-slim
+FROM python:3.9-slim AS no-root
+
+ARG UID=1000
+ARG GID=1000
 
 EXPOSE 8555 8444
 
-ENV CHIA_ROOT=/root/.chia/mainnet
+ENV CHIA_ROOT=/home/chia/.chia/mainnet
 ENV keys="generate"
 ENV service="farmer"
 ENV plots_dir="/plots"
@@ -43,22 +46,36 @@ ENV farmer="false"
 #   tzdata: Setting the timezone
 #   curl: Health-checks
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y tzdata curl && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
+    dpkg-reconfigure -f noninteractive tzdata && \
+    groupadd -g "${GID}" chia && \
+    useradd -m -u "${UID}" -g "${GID}" chia && \
+    mkdir /plots && \
+    chown -R chia:chia /home/chia /plots
 
-COPY --from=chia_build /chia-blockchain /chia-blockchain
+COPY --chown=chia:chia --from=chia_build /chia-blockchain /chia-blockchain
 
 ENV PATH=/chia-blockchain/venv/bin:$PATH
 WORKDIR /chia-blockchain
 
-COPY docker-start.sh /usr/local/bin/
-COPY docker-entrypoint.sh /usr/local/bin/
-COPY docker-healthcheck.sh /usr/local/bin/
+COPY docker-start.sh docker-entrypoint.sh docker-healthcheck.sh /usr/local/bin/
 
 HEALTHCHECK --interval=1m --timeout=10s --start-period=20m \
   CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
 
+USER chia:chia
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["docker-start.sh"]
+
+FROM no-root
+
+USER root:root
+
+ENV CHIA_ROOT=/root/.chia/mainnet
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo && \
+    rm -rf /var/lib/apt/lists/*
