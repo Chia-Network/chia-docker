@@ -66,6 +66,10 @@ if [[ -n ${farmer_address} && -n ${farmer_port} ]]; then
   chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
 fi
 
+if [[ -n ${fullnode_address} && -n ${fullnode_port} ]]; then
+  chia configure --set-fullnode-peer "${fullnode_address}:${fullnode_port}"
+fi
+
 if [[ -n ${crawler_db_path} ]]; then
   chia configure --crawler-db-path "${crawler_db_path}"
 fi
@@ -97,6 +101,13 @@ fi
 if [[ ${service} == "harvester" ]]; then
   if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
     echo "A farmer peer address, port, and ca path are required."
+    exit
+  fi
+fi
+
+if [[ ${service} == "wallet" ]]; then
+  if [[ -z ${fullnode_address} || -z ${fullnode_port} ]]; then
+    echo "A fullnode peer address and port are required."
     exit
   fi
 fi

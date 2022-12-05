@@ -82,7 +82,14 @@ To start a farmer only node pass
 
 To start a harvester only node pass
 ```bash
--e service="harvester" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
+-e service="harvester" -e farmer_address="address.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
+```
+
+### Wallet only
+
+To start a wallet only node pass
+```bash
+-e service="wallet" -e fullnode_address="address.of.fullnode" -e fullnode_port="portnumber"
 ```
 
 ### Plots
