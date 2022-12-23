@@ -11,7 +11,7 @@ cd /chia-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
-chia init --fix-ssl-permissions
+chia init
 
 if [[ ${testnet} == 'true' ]]; then
   echo "configure testnet"
@@ -22,7 +22,7 @@ if [[ ${keys} == "persistent" ]]; then
   echo "Not touching key directories"
 elif [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass the mnemonic as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  chia keys generate -l ""
+  chia keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
@@ -31,7 +31,7 @@ elif [[ ${keys} == "copy" ]]; then
   chia init -c "${ca}"
   fi
 else
-  chia keys add -f "${keys}" -l ""
+  chia keys add -f "${keys}"
 fi
 
 for p in ${plots_dir//:/ }; do
