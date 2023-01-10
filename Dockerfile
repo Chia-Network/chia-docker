@@ -33,6 +33,7 @@ ENV TZ="UTC"
 ENV upnp="true"
 ENV log_to_file="true"
 ENV healthcheck="true"
+ENV chia_args=
 
 # Deprecated legacy options
 ENV harvester="false"
