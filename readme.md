@@ -5,16 +5,19 @@
 These examples shows valid setups using Chia for both docker run and docker-compose. Note that you should read some documentation at some point, but this is a good place to start.
 
 ### Docker run
-
+Simple example:
 ```bash
-docker run --name chia -d ghcr.io/chia-network/chia:latest --expose=8444 -v /path/to/plots:/plots
+docker run --name chia --expose=8444 -v /path/to/plots:/plots -d ghcr.io/chia-network/chia:latest
 ```
 Syntax
 ```bash
-docker run --name <container-name> -d ghcr.io/chia-network/chia:latest
-optional accept incoming connections: --expose=8444
-optional: -v /path/to/plots:/plots
+docker run [--name <container-name>] [--expose=<port>] [-v </path/to/plots:/plots>] -d ghcr.io/chia-network/chia:latest
 ```
+Optional Docker parameters:
+- Give the container a name: `--name=chia`
+- Accept incoming connections: `--expose=8444`
+- Volume mount plots: `-v /path/to/plots:/plots`
+
 
 ### Docker compose
 
