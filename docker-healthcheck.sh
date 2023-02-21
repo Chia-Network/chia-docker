@@ -63,6 +63,13 @@ do
     esac
 done
 
+# Always check the daemon
+nc -z -v -w1 localhost 55400
+# shellcheck disable=SC2181
+if [[ "$?" -ne 0 ]]; then
+    logger "$(dt) Daemon healthcheck failed"
+    exit 1
+fi
 
 if [[ ${node_check} == "true" ]]; then
     curl -X POST --fail \
