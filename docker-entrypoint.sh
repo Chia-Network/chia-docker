@@ -11,7 +11,8 @@ cd /chia-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
-chia init --fix-ssl-permissions
+# shellcheck disable=SC2086
+chia ${chia_args} init --fix-ssl-permissions
 
 if [[ ${testnet} == 'true' ]]; then
   echo "configure testnet"
