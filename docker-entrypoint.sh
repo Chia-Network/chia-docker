@@ -11,8 +11,11 @@ cd /chia-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
+if [[ -n ${ca} ]]; then
+  chia_ca_arg="-c ${ca}"
+fi
 # shellcheck disable=SC2086
-chia ${chia_args} init --fix-ssl-permissions
+chia ${chia_args} init --fix-ssl-permissions ${chia_ca_arg}
 
 if [[ ${testnet} == 'true' ]]; then
   echo "configure testnet"
@@ -20,17 +23,13 @@ if [[ ${testnet} == 'true' ]]; then
 fi
 
 if [[ ${keys} == "persistent" ]]; then
-  echo "Not touching key directories"
+  echo "Not touching key directories, key directory likely mounted by volume"
+elif [[ ${keys} == "none" ]]; then
+  # This is technically redundant to 'keys=persistent', but from a user's readability perspective, it means two different things 
+  echo "Not touching key directories, no keys needed"
 elif [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass the mnemonic as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
   chia keys generate -l ""
-elif [[ ${keys} == "copy" ]]; then
-  if [[ -z ${ca} ]]; then
-    echo "A path to a copy of the farmer peer's ssl/ca required."
-    exit
-  else
-  chia init -c "${ca}"
-  fi
 else
   chia keys add -f "${keys}" -l ""
 fi
