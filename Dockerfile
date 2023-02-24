@@ -34,6 +34,7 @@ ENV upnp="true"
 ENV log_to_file="true"
 ENV healthcheck="true"
 ENV chia_args=
+ENV full_node_peer=
 
 # Deprecated legacy options
 ENV harvester="false"
@@ -43,11 +44,14 @@ ENV farmer="false"
 #   sudo: Needed for alternative plotter install
 #   tzdata: Setting the timezone
 #   curl: Health-checks
+#   netcat: Healthchecking the daemon
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
+    dpkg-reconfigure -f noninteractive tzdata && \
+    curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/bin/yq && \
+    chmod +x /usr/bin/yq
 
 COPY --from=chia_build /chia-blockchain /chia-blockchain
 

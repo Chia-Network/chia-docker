@@ -78,6 +78,20 @@ if [[ -n ${self_hostname} ]]; then
   sed -i "s/self_hostname: localhost/self_hostname: $self_hostname/g" "$CHIA_ROOT/config/config.yaml"
 fi
 
+if [[ -n ${full_node_peer} ]]; then
+  echo "Changing full_node_peer settings in config.yaml with value: $full_node_peer"
+  full_node_peer_host=$(echo "$full_node_peer" | cut -d ':' -f 1) \
+  full_node_peer_port=$(echo "$full_node_peer" | cut -d ':' -f 2) \
+  yq -i '
+  .wallet.full_node_peer.host = env(full_node_peer_host) |
+  .wallet.full_node_peer.port = env(full_node_peer_port) |
+  .timelord.full_node_peer.host = env(full_node_peer_host) |
+  .timelord.full_node_peer.port = env(full_node_peer_port) |
+  .farmer.full_node_peer.host = env(full_node_peer_host) |
+  .farmer.full_node_peer.port = env(full_node_peer_port)
+  ' "$CHIA_ROOT/config/config.yaml"
+fi
+
 # TODO: Document why this is needed
 sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
 
