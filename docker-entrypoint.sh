@@ -80,8 +80,8 @@ fi
 
 if [[ -n ${full_node_peer} ]]; then
   echo "Changing full_node_peer settings in config.yaml with value: $full_node_peer"
-  full_node_peer_host=$(echo "$full_node_peer" | cut -d ':' -f 1) \
-  full_node_peer_port=$(echo "$full_node_peer" | cut -d ':' -f 2) \
+  full_node_peer_host=$(echo "$full_node_peer" | rev | cut -d ':' -f 2- | rev) \
+  full_node_peer_port=$(echo "$full_node_peer" | awk -F: '{print $NF}') \
   yq -i '
   .wallet.full_node_peer.host = env(full_node_peer_host) |
   .wallet.full_node_peer.port = env(full_node_peer_port) |
