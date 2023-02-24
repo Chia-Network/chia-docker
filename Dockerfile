@@ -45,6 +45,7 @@ ENV farmer="false"
 #   tzdata: Setting the timezone
 #   curl: Health-checks
 #   netcat: Healthchecking the daemon
+#   yq: changing config settings
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat && \
     rm -rf /var/lib/apt/lists/* && \
