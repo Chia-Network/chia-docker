@@ -88,6 +88,14 @@ To start a harvester only node pass
 -e service="harvester" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
 ```
 
+### Configure full_node peer
+
+To set the full_node peer's hostname and port, set the "full_node_peer" environment variable with the format `hostname:port`
+```bash
+-e full_node_peer="node:8444"
+```
+This will configure the full_node peer hostname and port for the wallet, farmer, and timelord sections of the config.yaml file.
+
 ### Plots
 
 The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
