@@ -11,11 +11,12 @@ cd /chia-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
-if [[ -n ${ca} ]]; then
-  chia_ca_arg="-c ${ca}"
-fi
 # shellcheck disable=SC2086
-chia ${chia_args} init --fix-ssl-permissions ${chia_ca_arg}
+chia ${chia_args} init --fix-ssl-permissions
+
+if [[ -n ${ca} ]]; then
+  chia init -c "${ca}"
+fi
 
 if [[ ${testnet} == 'true' ]]; then
   echo "configure testnet"
@@ -25,7 +26,7 @@ fi
 if [[ ${keys} == "persistent" ]]; then
   echo "Not touching key directories, key directory likely mounted by volume"
 elif [[ ${keys} == "none" ]]; then
-  # This is technically redundant to 'keys=persistent', but from a user's readability perspective, it means two different things 
+  # This is technically redundant to 'keys=persistent', but from a user's readability perspective, it means two different things
   echo "Not touching key directories, no keys needed"
 elif [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass the mnemonic as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
