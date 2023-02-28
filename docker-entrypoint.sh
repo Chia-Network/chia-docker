@@ -77,7 +77,9 @@ if [[ -n ${crawler_minimum_version_count} ]]; then
 fi
 
 if [[ -n ${self_hostname} ]]; then
-  sed -i "s/self_hostname: localhost/self_hostname: $self_hostname/g" "$CHIA_ROOT/config/config.yaml"
+  yq -i '.self_hostname = env(self_hostname)' "$CHIA_ROOT/config/config.yaml"
+else
+  yq -i '.self_hostname = "127.0.0.1"' "$CHIA_ROOT/config/config.yaml"
 fi
 
 if [[ -n ${full_node_peer} ]]; then
@@ -93,9 +95,6 @@ if [[ -n ${full_node_peer} ]]; then
   .farmer.full_node_peer.port = env(full_node_peer_port)
   ' "$CHIA_ROOT/config/config.yaml"
 fi
-
-# TODO: Document why this is needed
-sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
 
 if [[ ${log_to_file} != 'true' ]]; then
   sed -i 's/log_stdout: false/log_stdout: true/g' "$CHIA_ROOT/config/config.yaml"
