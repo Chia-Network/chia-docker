@@ -15,7 +15,7 @@ cd /chia-blockchain || exit 1
 chia ${chia_args} init --fix-ssl-permissions
 
 if [[ -n ${ca} ]]; then
-  chia init -c "${ca}"
+  chia ${chia_args} init -c "${ca}"
 fi
 
 if [[ ${testnet} == 'true' ]]; then
