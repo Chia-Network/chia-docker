@@ -15,6 +15,7 @@ cd /chia-blockchain || exit 1
 chia ${chia_args} init --fix-ssl-permissions
 
 if [[ -n ${ca} ]]; then
+  # shellcheck disable=SC2086
   chia ${chia_args} init -c "${ca}"
 fi
 
