@@ -30,7 +30,7 @@ elif [[ ${keys} == "none" ]]; then
   # This is technically redundant to 'keys=persistent', but from a user's readability perspective, it means two different things
   echo "Not touching key directories, no keys needed"
 elif [[ ${keys} == "copy" ]]; then
-  echo "Setting the keys=copy environment variable has been depricated. If you're seeing this message, you can simply remove the keys variable from your container configuration"
+  echo "Setting the keys=copy environment variable has been deprecated. If you're seeing this message, you can simply change the value of the variable "keys" to "none"
 elif [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass the mnemonic as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
   chia keys generate -l ""
