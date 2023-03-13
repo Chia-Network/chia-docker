@@ -85,7 +85,7 @@ To start a farmer only node pass
 
 To start a harvester only node pass
 ```bash
--e service="harvester" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container" -e keys="copy"
+-e service="harvester" -e farmer_address="addres.of.farmer" -e farmer_port="portnumber" -v /path/to/ssl/ca:/path/in/container -e ca="/path/in/container"
 ```
 
 ### Configure full_node peer
@@ -155,7 +155,7 @@ services:
 #     farmer_address: 192.168.0.10
 #     farmer_port: 8447
 #     ca: /path/in/container
-#     keys: copy
+#     keys: generate
       # Harvester Only END
       # If you would like to add keys manually via mnemonic file
 #     keys: /path/in/container
