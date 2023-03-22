@@ -17,7 +17,7 @@ RUN echo "cloning ${BRANCH}" && \
     echo "running build-script" && \
     /bin/sh ./install.sh
 
-# Get yq
+# Get yq for chia config changes
 FROM mikefarah/yq:4.32.2 AS yq
 
 # IMAGE BUILD
