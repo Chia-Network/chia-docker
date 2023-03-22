@@ -17,6 +17,9 @@ RUN echo "cloning ${BRANCH}" && \
     echo "running build-script" && \
     /bin/sh ./install.sh
 
+# Get yq
+FROM mikefarah/yq:4.32.2 AS yq
+
 # IMAGE BUILD
 FROM python:3.9-slim
 
@@ -50,10 +53,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata && \
-    curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/bin/yq && \
-    chmod +x /usr/bin/yq
+    dpkg-reconfigure -f noninteractive tzdata
 
+COPY --from=yq /usr/bin/yq /usr/bin/yq
 COPY --from=chia_build /chia-blockchain /chia-blockchain
 
 ENV PATH=/chia-blockchain/venv/bin:$PATH
