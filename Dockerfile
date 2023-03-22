@@ -18,7 +18,7 @@ RUN echo "cloning ${BRANCH}" && \
     /bin/sh ./install.sh
 
 # Get yq for chia config changes
-FROM mikefarah/yq:4.32.2 AS yq
+FROM mikefarah/yq:4 AS yq
 
 # IMAGE BUILD
 FROM python:3.9-slim
