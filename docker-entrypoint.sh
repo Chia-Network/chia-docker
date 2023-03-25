@@ -112,9 +112,16 @@ elif [[ ${harvester} == "true" ]]; then
 fi
 
 if [[ ${service} == "harvester" ]]; then
-  if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
-    echo "A farmer peer address, port, and ca path are required."
-    exit
+  if [[ ${keys} == "persistent" || ${keys} == "none" ]]; then
+    if [[ -z ${farmer_address} || -z ${farmer_port} ]]; then
+      echo "A farmer peer address and port are required."
+      exit
+    fi
+  else
+    if [[ -z ${farmer_address} || -z ${farmer_port} || -z ${ca} ]]; then
+      echo "A farmer peer address, port, and ca path are required."
+      exit
+    fi
   fi
 fi
 
