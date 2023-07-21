@@ -181,6 +181,11 @@ fi
 # Install timelord if service variable contains timelord substring
 if [ -z "${service##*timelord*}" ]; then
     echo "Installing timelord using install-timelord.sh"
+
+    # install-timelord.sh relies on lsb-release for determining the cmake installation method, and git for building chiavdf
+    DEBIAN_FRONTEND=noninteractive apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release git
+    
     /bin/sh ./install-timelord.sh
 fi
 
@@ -199,3 +204,5 @@ if [[ ${service} == "harvester" ]]; then
 fi
 
 exec "$@"
+
+python -c 'import subprocess; id = subprocess.run(["lsb_release", "-is"], stdout=subprocess.PIPE); version = subprocess.run(["lsb_release", "-rs"], stdout=subprocess.PIPE); print(id.stdout.decode("ascii") == "Ubuntu\n" and float(version.stdout) < float(20.04))'
