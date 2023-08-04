@@ -12,4 +12,4 @@ if [[ ${log_to_file} == 'true' ]]; then
   tail -F "$CHIA_ROOT/log/debug.log" &
 fi
 
-while true; do sleep 1; done
+tail -F /dev/null
