@@ -1,5 +1,5 @@
 # CHIA BUILD STEP
-FROM python:3.9 AS chia_build
+FROM python:3.9-bullseye AS chia_build
 
 ARG BRANCH=latest
 ARG COMMIT=""
@@ -13,7 +13,7 @@ WORKDIR /chia-blockchain
 RUN echo "cloning ${BRANCH}" && \
     git clone --depth 1 --branch ${BRANCH} --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git . && \
     # If COMMIT is set, check out that commit, otherwise just continue
-    ( [ ! -z "$COMMIT" ] && git checkout $COMMIT ) || true && \
+    ( [ ! -z "$COMMIT" ] && git fetch origin $COMMIT && git checkout $COMMIT ) || true && \
     echo "running build-script" && \
     /bin/sh ./install.sh
 
@@ -21,7 +21,7 @@ RUN echo "cloning ${BRANCH}" && \
 FROM mikefarah/yq:4 AS yq
 
 # IMAGE BUILD
-FROM python:3.9-slim
+FROM python:3.9-slim-bullseye
 
 EXPOSE 8555 8444
 
@@ -50,7 +50,7 @@ ENV farmer="false"
 #   netcat: Healthchecking the daemon
 #   yq: changing config settings
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat-traditional && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
