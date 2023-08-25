@@ -106,11 +106,12 @@ Set the environment variable `recursive_plot_scan` to `true` to enable the recur
 
 ### Compressed Plots
 
-There are a few environment variables that control compressed plot settings for Harvesters ran with chia-docker. The default settings leave compressed plot harvesting disabled, but it can be enabled. 
+There are a few environment variables that control compressed plot settings for Harvesters ran with chia-docker. The default settings leave compressed plot harvesting disabled, but it can be enabled.
 
 See the [official documentation](https://docs.chia.net/farming-compressed-plots/#cli) for a description on what each of these settings do.
 
 Compressed plot farming can be enabled by setting the following:
+
 ```bash
 -e parallel_decompressor_count=1
 -e decompressor_thread_count=1
