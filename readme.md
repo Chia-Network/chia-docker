@@ -104,6 +104,25 @@ Or, you can simply mount `/plots` path to your host machine.
 
 Set the environment variable `recursive_plot_scan` to `true` to enable the recursive plot scan configuration option.
 
+### Compressed Plots
+
+There are a few environment variables that control compressed plot settings for Harvesters ran with chia-docker. The default settings leave compressed plot harvesting disabled, but it can be enabled.
+
+See the [official documentation](https://docs.chia.net/farming-compressed-plots/#cli) for a description on what each of these settings do.
+
+Compressed plot farming can be enabled by setting the following:
+
+```bash
+-e parallel_decompressor_count=1
+-e decompressor_thread_count=1
+```
+
+And to use an nvidia GPU for plot decompression, set:
+
+```bash
+-e use_gpu_harvesting="true"
+```
+
 ### Log level
 To set the log level to one of CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
 ```bash
