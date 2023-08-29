@@ -128,7 +128,8 @@ if [[ -n "$install_bladebit" && "$install_bladebit" == 'true' ]]; then
   DEBIAN_FRONTEND=noninteractive apt update
   DEBIAN_FRONTEND=noninteractive apt install -y build-essential cmake libgmp-dev libnuma-dev git
   cd / || exit 1
-  git clone https://github.com/Chia-Network/bladebit.git && cd bladebit
+  git clone https://github.com/Chia-Network/bladebit.git
+  cd bladebit || exit 1
   mkdir -p build && cd build
   cmake ..
   cmake --build . --target bladebit --config Release
