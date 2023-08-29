@@ -1,12 +1,12 @@
 # CHIA BUILD STEP
-FROM python:3.9-bullseye AS chia_build
+FROM python:3.9-slim AS chia_build
 
 ARG BRANCH=latest
 ARG COMMIT=""
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-        lsb-release sudo
+        lsb-release sudo git
 
 WORKDIR /chia-blockchain
 
@@ -15,13 +15,13 @@ RUN echo "cloning ${BRANCH}" && \
     # If COMMIT is set, check out that commit, otherwise just continue
     ( [ ! -z "$COMMIT" ] && git fetch origin $COMMIT && git checkout $COMMIT ) || true && \
     echo "running build-script" && \
-    /bin/sh ./install.sh
+    /bin/sh ./install.sh -s
 
 # Get yq for chia config changes
 FROM mikefarah/yq:4 AS yq
 
 # IMAGE BUILD
-FROM python:3.9-slim-bullseye
+FROM python:3.9-slim
 
 EXPOSE 8555 8444
 
