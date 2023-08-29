@@ -130,7 +130,8 @@ if [[ -n "$install_bladebit" && "$install_bladebit" == 'true' ]]; then
   cd / || exit 1
   git clone https://github.com/Chia-Network/bladebit.git
   cd bladebit || exit 1
-  mkdir -p build && cd build
+  mkdir -p build
+  cd build || exit 1
   cmake ..
   cmake --build . --target bladebit --config Release
   cd /chia-blockchain || exit 1
