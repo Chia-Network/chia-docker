@@ -216,6 +216,18 @@ docker exec -it chia venv/bin/chia farm summary
 docker run -d --expose=58444 -e testnet=true --name chia ghcr.io/chia-network/chia:latest
 ```
 
+### Connect remotely
+
+Sometimes you may want to access Chia RPCs from outside of the container, or connect a GUI to a remote Chia farm. In those instances, you may need to configure the `self_hostname` key in the Chia config file.
+
+By default this is set to `127.0.0.1` in chia-docker, but can be configured using the `self_hostname` environment variable, like so:
+
+```bash
+docker run -d -e self_hostname="0.0.0.0" --name chia ghcr.io/chia-network/chia:latest
+```
+
+This sets self_hostname in the config to `0.0.0.0`, which will allow you to access the Chia RPC from outside of the container (you will still need a copy of the private cert/key for the component you're attempting to access.)
+
 #### Need a wallet?
 
 To get new wallet, execute command and follow the prompts:
