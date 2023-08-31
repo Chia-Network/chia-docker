@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC2154
-if [[ -n "${TZ}" ]]; then
-  echo "Setting timezone to ${TZ}"
-  ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
-fi
-
 cd /chia-blockchain || exit 1
 
 # shellcheck disable=SC1091
@@ -39,7 +33,8 @@ else
 fi
 
 for p in ${plots_dir//:/ }; do
-  mkdir -p "${p}"
+  sudo mkdir -p "${p}"
+  sudo chown chia: "${p}"
   if [[ ! $(ls -A "$p") ]]; then
     echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
   fi
@@ -121,6 +116,20 @@ if [[ -n "$use_gpu_harvesting" && "$use_gpu_harvesting" == 'true' ]]; then
   yq -i '.harvester.use_gpu_harvesting = True' "$CHIA_ROOT/config/config.yaml"
 else
   yq -i '.harvester.use_gpu_harvesting = False' "$CHIA_ROOT/config/config.yaml"
+fi
+
+# Install plotters (bladebit)
+if [[ -n "$install_bladebit" && "$install_bladebit" == 'true' ]]; then
+  DEBIAN_FRONTEND=noninteractive sudo apt-get update
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y wget
+  ./install-plotter.sh bladebit
+fi
+
+# Install plotters (madmax)
+if [[ -n "$install_madmax" && "$install_madmax" == 'true' ]]; then
+  DEBIAN_FRONTEND=noninteractive sudo apt-get update
+  DEBIAN_FRONTEND=noninteractive sudo apt-get install -y wget
+  ./install-plotter.sh madmax
 fi
 
 # Map deprecated legacy startup options.
