@@ -15,9 +15,9 @@ cd /chia-blockchain || exit 1
 chia ${chia_args} init --fix-ssl-permissions
 
 if [[ -n ${ca} ]]; then
-  openssl verify -CAfile ${ca}/private_ca.crt ${CHIA_ROOT}/config/ssl/harvester/private_harvester.crt &>/dev/null
-  if [ ${?} -ne 0 ]; then
+  if ! openssl verify -CAfile "${ca}/private_ca.crt" "${CHIA_ROOT}/config/ssl/harvester/private_harvester.crt" &>/dev/null; then
     echo "initializing from new CA"
+    # shellcheck disable=SC2086
     chia ${chia_args} init -c "${ca}"
   else
     echo "using existing CA"
