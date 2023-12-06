@@ -178,6 +178,17 @@ else
   yq -i '.harvester.use_gpu_harvesting = False' "$CHIA_ROOT/config/config.yaml"
 fi
 
+# Install timelord if service variable contains timelord substring
+if [ -z "${service##*timelord*}" ]; then
+    echo "Installing timelord using install-timelord.sh"
+
+    # install-timelord.sh relies on lsb-release for determining the cmake installation method, and git for building chiavdf
+    DEBIAN_FRONTEND=noninteractive apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release git
+
+    /bin/sh ./install-timelord.sh
+fi
+
 # Map deprecated legacy startup options.
 if [[ ${farmer} == "true" ]]; then
   service="farmer-only"
