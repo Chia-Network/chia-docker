@@ -15,13 +15,68 @@ cd /chia-blockchain || exit 1
 chia ${chia_args} init --fix-ssl-permissions
 
 if [[ -n ${ca} ]]; then
-  # shellcheck disable=SC2086
-  chia ${chia_args} init -c "${ca}"
+  if ! openssl verify -CAfile "${ca}/private_ca.crt" "${CHIA_ROOT}/config/ssl/harvester/private_harvester.crt" &>/dev/null; then
+    echo "initializing from new CA"
+    # shellcheck disable=SC2086
+    chia ${chia_args} init -c "${ca}"
+  else
+    echo "using existing CA"
+  fi
 fi
 
+# Enables whatever the default testnet is for the version of chia that is running
 if [[ ${testnet} == 'true' ]]; then
   echo "configure testnet"
   chia configure --testnet true
+fi
+
+# Allows using another testnet that isn't the default testnet
+if [[ -n ${network} ]]; then
+  echo "Setting network name to ${network}"
+  yq -i '
+    .selected_network = env(network) |
+    .seeder.selected_network = env(network) |
+    .harvester.selected_network = env(network) |
+    .pool.selected_network = env(network) |
+    .farmer.selected_network = env(network) |
+    .timelord.selected_network = env(network) |
+    .full_node.selected_network = env(network) |
+    .ui.selected_network = env(network) |
+    .introducer.selected_network = env(network) |
+    .wallet.selected_network = env(network) |
+    .data_layer.selected_network = env(network)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${network_port} ]]; then
+  echo "Setting network port to ${network_port}"
+  yq -i '
+    .seeder.port = env(network_port) |
+    .seeder.other_peers_port = env(network_port) |
+    .farmer.full_node_peers[0].port = env(network_port) |
+    .timelord.full_node_peers[0].port = env(network_port) |
+    .full_node.port = env(network_port) |
+    .full_node.introducer_peer.port = env(network_port) |
+    .introducer.port = env(network_port) |
+    .wallet.full_node_peers[0].port = env(network_port) |
+    .wallet.introducer_peer.port = env(network_port)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${introducer_address} ]]; then
+  echo "Setting introducer to ${introducer_address}"
+  yq -i '
+    .full_node.introducer_peer.host = env(introducer_address) |
+    .wallet.introducer_peer.host = env(introducer_address)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${dns_introducer_address} ]]; then
+  echo "Setting network port in config to ${dns_introducer_address}"
+  yq -i '
+    .full_node.dns_servers = [env(dns_introducer_address)] |
+    .wallet.dns_servers = [env(dns_introducer_address)]
+    ' "$CHIA_ROOT/config/config.yaml"
 fi
 
 if [[ ${keys} == "persistent" ]]; then
@@ -121,6 +176,17 @@ if [[ -n "$use_gpu_harvesting" && "$use_gpu_harvesting" == 'true' ]]; then
   yq -i '.harvester.use_gpu_harvesting = True' "$CHIA_ROOT/config/config.yaml"
 else
   yq -i '.harvester.use_gpu_harvesting = False' "$CHIA_ROOT/config/config.yaml"
+fi
+
+# Install timelord if service variable contains timelord substring
+if [ -z "${service##*timelord*}" ]; then
+    echo "Installing timelord using install-timelord.sh"
+
+    # install-timelord.sh relies on lsb-release for determining the cmake installation method, and git for building chiavdf
+    DEBIAN_FRONTEND=noninteractive apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release git
+
+    /bin/sh ./install-timelord.sh
 fi
 
 # Map deprecated legacy startup options.

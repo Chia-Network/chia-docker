@@ -11,7 +11,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 WORKDIR /chia-blockchain
 
 RUN echo "cloning ${BRANCH}" && \
-    git clone --depth 1 --branch ${BRANCH} --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git . && \
+    if [ -z "$COMMIT" ]; then \
+        DEPTH_FLAG="--depth 1"; \
+    else \
+        DEPTH_FLAG=""; \
+    fi && \
+    git clone ${DEPTH_FLAG} --branch ${BRANCH} --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git . && \
     # If COMMIT is set, check out that commit, otherwise just continue
     ( [ ! -z "$COMMIT" ] && git fetch origin $COMMIT && git checkout $COMMIT ) || true && \
     echo "running build-script" && \

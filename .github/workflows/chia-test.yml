@@ -21,4 +21,22 @@ jobs:
             });
             return release.data.tag_name;
 
-      - run: docker build --build-arg BRANCH="${{ steps.tag.outputs.result }}" .
+      - run: docker build --build-arg BRANCH="${{ steps.tag.outputs.result }}" -t localtest:latest .
+
+      - run: docker run -d --name=chia localtest:latest
+
+      - timeout-minutes: 10
+        run: |
+          while true; do
+            HEALTH_STATUS=$(docker inspect --format="{{.State.Health.Status}}" chia)
+            if [ "$HEALTH_STATUS" == "starting" ]; then
+              echo "Container chia is still starting. Waiting..."
+              sleep 1
+            elif [ "$HEALTH_STATUS" == "healthy" ]; then
+              echo "Health check succeeded for container chia"
+              break
+            else
+              echo "Health check failed for container chia"
+              exit 1
+            fi
+          done
