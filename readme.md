@@ -183,9 +183,9 @@ services:
 #     keys: 
       TZ: ${TZ}
       # Enable UPnP
-#     upnp: true
+#     upnp: "true"
       # Enable log file generation
-#     log_to_file: true
+#     log_to_file: "true"
     volumes:
       - /path/to/plots:/plots
       - /home/user/.chia:/root/.chia
