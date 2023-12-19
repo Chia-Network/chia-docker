@@ -72,7 +72,7 @@ if [[ -n ${introducer_address} ]]; then
 fi
 
 if [[ -n ${dns_introducer_address} ]]; then
-  echo "Setting network port in config to ${dns_introducer_address}"
+  echo "Setting dns introducer to ${dns_introducer_address}"
   yq -i '
     .full_node.dns_servers = [env(dns_introducer_address)] |
     .wallet.dns_servers = [env(dns_introducer_address)]
