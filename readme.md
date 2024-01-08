@@ -104,6 +104,13 @@ Or, you can simply mount `/plots` path to your host machine.
 
 Set the environment variable `recursive_plot_scan` to `true` to enable the recursive plot scan configuration option.
 
+### Adding mounts while running
+
+By default, Docker requires a container restart to discover newly mounted filesystems under a configured bind-mount. Setting the bind-propagation option to `rslave` enables dynamic addition of sub-mounts while the container is running (Linux systems only). [See Docker Bind Mounts documentation for more information.](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation)
+```bash
+-v /plotdrives:/plotdrives:rslave
+```
+
 ### Compressed Plots
 
 There are a few environment variables that control compressed plot settings for Harvesters ran with chia-docker. The default settings leave compressed plot harvesting disabled, but it can be enabled.
