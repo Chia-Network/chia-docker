@@ -210,11 +210,55 @@ docker exec -it chia venv/bin/chia plots add -d /plots
 
 You can see status from outside the container
 ```bash
-docker exec -it chia venv/bin/chia show -s -c
+$ docker exec -it chia venv/bin/chia farm summary
+Farming status: Farming
+Total chia farmed: xx
+User transaction fees: xx
+Block rewards: xx
+Last height farmed: xxxxxxx
+Local Harvester
+   xxx plots of size: xx.xxx TiB
+Plot count for all harvesters: xxx
+Total size of plots: xx.xxx TiB
+Estimated network space: 30.638 EiB
+Expected time to win: x months and x weeks
+Note: log into your key using 'chia wallet show' to see rewards for each key
 ```
-or
+
+Or via `chia peer`. Note that you have to specify your component.
+
 ```bash
-docker exec -it chia venv/bin/chia farm summary
+docker exec -it chia venv/bin/chia peer -c {farmer|wallet|full_node|harvester|data_layer}
+```
+
+Or via `chia show -s`.
+
+```bash
+$ docker exec -it chia venv/bin/chia show -s
+Network: mainnet    Port: 8444   RPC Port: 8555
+Node ID: xxxxx
+Genesis Challenge: xxxxx
+Current Blockchain Status: Full Node Synced
+
+Peak: Hash: xxxxx
+      Time: Fri Jan 19 2024 17:52:44 CET                  Height:    4823454
+
+Estimated network space: 30.639 EiB
+Current difficulty: 11136
+Current VDF sub_slot_iters: 574619648
+
+  Height: |   Hash:
+  4823454 | 7e66bd11e46801b25ac9237e300deff27a4750fc3bf4eb7e3c594b17faaf0b37
+  4823453 | 9f5b68a52364c1afec48bc87d26bbba912c355e7f51c970f7bf89d068c762530
+  4823452 | db3b5bb0e3d09fd398e2d9bd159c387f9ad280ec8719916ebb6c25c948834f9c
+  4823451 | 5dd056960ec14da1c54fe295f33487e280f3e3c39eddced158ebb520b8215894
+  4823450 | a3f5a3f61728b1f52e1ab7971b29d0c55b6bc8e2797ad826b780ada7a0f76a49
+  4823449 | 052075e6b9881049c95c3ceeabed9160e5bfbf55a2b3b0768a743542ce88a3a3
+  4823448 | 3e2b954d4eb782d1ce67eb7f17e9bf72843d17948ba181168dbc239c5e70acd2
+  4823447 | 69539a9474c239280b6a6b4ab5be994e892c1b75c7bfb8967517e75ee5a65b12
+  4823446 | 47ce031f46b2b0c9f90e90de4f9cab58054f356a7a3019b30c8f6292b86a5aae
+  4823445 | 8c5d0254db6e304696d240dc70bad803ad227b861d68e65a3dc30c0aeef298f6
+
 ```
 
 ### Connect to testnet?
