@@ -79,6 +79,48 @@ if [[ -n ${dns_introducer_address} ]]; then
     ' "$CHIA_ROOT/config/config.yaml"
 fi
 
+if [[ -n ${seeder_bootstrap_peers} ]]; then
+  echo "Setting seeder.bootstrap_peers to ${seeder_bootstrap_peers}"
+  yq -i '
+    .seeder.bootstrap_peers = [env(seeder_bootstrap_peers)]
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${seeder_minimum_height} ]]; then
+  echo "Setting seeder.minimum_height to ${seeder_minimum_height}"
+  yq -i '
+    .seeder.minimum_height = env(seeder_minimum_height)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${seeder_domain_name} ]]; then
+  echo "Setting seeder.domain_name to ${seeder_domain_name}"
+  yq -i '
+    .seeder.domain_name = env(seeder_domain_name)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${seeder_nameserver} ]]; then
+  echo "Setting seeder.nameserver to ${seeder_nameserver}"
+  yq -i '
+    .seeder.nameserver = env(seeder_nameserver)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${seeder_ttl} ]]; then
+  echo "Setting seeder.ttl to ${seeder_ttl}"
+  yq -i '
+    .seeder.ttl = env(seeder_ttl)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
+if [[ -n ${seeder_soa_rname} ]]; then
+  echo "Setting seeder.soa.rname to ${seeder_soa_rname}"
+  yq -i '
+    .seeder.soa.rname = env(seeder_soa_rname)
+    ' "$CHIA_ROOT/config/config.yaml"
+fi
+
 if [[ ${keys} == "persistent" ]]; then
   echo "Not touching key directories, key directory likely mounted by volume"
 elif [[ ${keys} == "none" ]]; then
