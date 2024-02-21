@@ -11,6 +11,16 @@ cd /chia-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
+# Set a few overrides if the service variable contains simulator
+if [ -z "${service##*simulator*}" ]; then
+    echo "Setting up environment for simulator..."
+    export CHIA_ROOT=/root/.chia/simulator/main
+    export self_hostname="0.0.0.0"
+
+    chia dev sim create --docker-mode
+    chia stop -d all
+fi
+
 # shellcheck disable=SC2086
 chia ${chia_args} init --fix-ssl-permissions
 
