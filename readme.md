@@ -326,3 +326,9 @@ readinessProbe:
 ```
 
 See [Configure Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) for more information about configuring readiness and liveness probes for Kubernetes clusters. The `initialDelaySeconds` parameter may need to be adjusted higher or lower depending on the speed to start up on the host the container is running on.
+
+## Simulator
+
+`docker run -e service=simulator -v /local/path/to/simulator:/root/.chia/simulator ghcr.io/chia-network/chia:latest`
+
+Mounts the simulator root to the provided local path to make the test plots and the mnemonic persistent. Mnemonic will be available at /local/path/to/simulator/mnemonic

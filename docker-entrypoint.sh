@@ -11,6 +11,28 @@ cd /chia-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
+# Set a few overrides if the service variable contains simulator
+if [ -z "${service##*simulator*}" ]; then
+    echo "Setting up environment for simulator..."
+    export CHIA_ROOT=/root/.chia/simulator/main
+    export self_hostname="0.0.0.0"
+
+    if [ -f /root/.chia/simulator/mnemonic ]; then
+        echo "Using provided mnemonic from /root/.chia/simulator/mnemonic"
+        # Use awk to trim leading and trailing whitespace while preserving internal spaces
+        mnemonic=$(awk '{$1=$1};1' /root/.chia/simulator/mnemonic)
+    fi
+
+    if [ -n "$mnemonic" ]; then  # Check if mnemonic is non-empty after trimming
+      chia dev sim create --docker-mode --mnemonic "${mnemonic}"
+    else
+      chia dev sim create --docker-mode
+    fi
+
+    chia stop -d all
+    chia keys show --show-mnemonic-seed --json | jq -r '.keys[0].mnemonic' > /root/.chia/simulator/mnemonic
+fi
+
 # shellcheck disable=SC2086
 chia ${chia_args} init --fix-ssl-permissions
 
