@@ -17,20 +17,22 @@ if [ -z "${service##*simulator*}" ]; then
     export CHIA_ROOT=/root/.chia/simulator/main
     export self_hostname="0.0.0.0"
 
-    if [ -f /root/.chia/simulator/mnemonic ]; then
-        echo "Using provided mnemonic from /root/.chia/simulator/mnemonic"
-        # Use awk to trim leading and trailing whitespace while preserving internal spaces
-        mnemonic=$(awk '{$1=$1};1' /root/.chia/simulator/mnemonic)
-    fi
+    if [[ ${skip_sim_create} != 'true' ]]; then
+      if [ -f /root/.chia/simulator/mnemonic ]; then
+          echo "Using provided mnemonic from /root/.chia/simulator/mnemonic"
+          # Use awk to trim leading and trailing whitespace while preserving internal spaces
+          mnemonic=$(awk '{$1=$1};1' /root/.chia/simulator/mnemonic)
+      fi
 
-    if [ -n "$mnemonic" ]; then  # Check if mnemonic is non-empty after trimming
-      chia dev sim create --docker-mode --mnemonic "${mnemonic}"
-    else
-      chia dev sim create --docker-mode
-    fi
+      if [ -n "$mnemonic" ]; then  # Check if mnemonic is non-empty after trimming
+        chia dev sim create --docker-mode --mnemonic "${mnemonic}"
+      else
+        chia dev sim create --docker-mode
+      fi
 
-    chia stop -d all
-    chia keys show --show-mnemonic-seed --json | jq -r '.keys[0].mnemonic' > /root/.chia/simulator/mnemonic
+      chia stop -d all
+      chia keys show --show-mnemonic-seed --json | jq -r '.keys[0].mnemonic' > /root/.chia/simulator/mnemonic
+    fi
 fi
 
 # shellcheck disable=SC2086
