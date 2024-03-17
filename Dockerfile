@@ -1,5 +1,5 @@
 # CHIA BUILD STEP
-FROM python:3.10-slim AS chia_build
+FROM python:3.11-slim AS chia_build
 
 ARG BRANCH=latest
 ARG COMMIT=""
@@ -26,7 +26,7 @@ RUN echo "cloning ${BRANCH}" && \
 FROM mikefarah/yq:4 AS yq
 
 # IMAGE BUILD
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 EXPOSE 8555 8444
 
