@@ -210,12 +210,12 @@ if [[ -n ${full_node_peer} ]]; then
   full_node_peer_host=$(echo "$full_node_peer" | rev | cut -d ':' -f 2- | rev) \
   full_node_peer_port=$(echo "$full_node_peer" | awk -F: '{print $NF}') \
   yq -i '
-  .wallet.full_node_peer.host = env(full_node_peer_host) |
-  .wallet.full_node_peer.port = env(full_node_peer_port) |
-  .timelord.full_node_peer.host = env(full_node_peer_host) |
-  .timelord.full_node_peer.port = env(full_node_peer_port) |
-  .farmer.full_node_peer.host = env(full_node_peer_host) |
-  .farmer.full_node_peer.port = env(full_node_peer_port)
+  .wallet.full_node_peers[0].host = env(full_node_peer_host) |
+  .wallet.full_node_peers[0].port = env(full_node_peer_port) |
+  .timelord.full_node_peers[0].host = env(full_node_peer_host) |
+  .timelord.full_node_peers[0].port = env(full_node_peer_port) |
+  .farmer.full_node_peers[0].host = env(full_node_peer_host) |
+  .farmer.full_node_peers[0].port = env(full_node_peer_port)
   ' "$CHIA_ROOT/config/config.yaml"
 fi
 
