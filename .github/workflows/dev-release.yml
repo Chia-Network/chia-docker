@@ -7,6 +7,11 @@ on:
         description: "The SHA from chia-blockchain to use when building the image"
         required: true
 
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+
 concurrency:
   group: ${{ github.event.inputs.sha }}
   cancel-in-progress: true
@@ -29,7 +34,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.PACKAGE_ADMIN_PAT }}
+          password: ${{ github.token }}
 
       - name: Docker meta
         id: meta

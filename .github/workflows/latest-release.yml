@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+
 concurrency:
   group: "latest"
 
@@ -27,7 +32,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.PACKAGE_ADMIN_PAT }}
+          password: ${{ github.token }}
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
