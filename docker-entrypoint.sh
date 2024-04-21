@@ -246,6 +246,13 @@ fi
 
 # Install timelord if service variable contains timelord substring
 if [ -z "${service##*timelord*}" ]; then
+    arch=$(uname -m)
+    echo "Info: detected CPU architecture $arch"
+    if [ "$arch" != "x86_64" ]; then
+      echo "Error: Unsupported CPU architecture for running the timelord component. Requires x86_64."
+      exit 1
+    fi
+
     echo "Installing timelord using install-timelord.sh"
 
     # install-timelord.sh relies on lsb-release for determining the cmake installation method, and git for building chiavdf
