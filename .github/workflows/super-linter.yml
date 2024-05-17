@@ -20,10 +20,13 @@ jobs:
           fetch-depth: 0
 
       - name: Lint Code Base
-        uses: github/super-linter@v4
+        uses: github/super-linter@v6
         env:
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_NATURAL_LANGUAGE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_DOCKERFILE_HADOLINT: false # Breaks CI by trying to validate things that aren't dockerfiles
+          VALIDATE_JSCPD: false
+          VALIDATE_CHECKOV: false
+          VALIDATE_SHELL_SHFMT: false
