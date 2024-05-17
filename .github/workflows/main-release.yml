@@ -51,7 +51,7 @@ jobs:
             type=raw,value=main
 
       - name: Build docker image and push to github packages
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
