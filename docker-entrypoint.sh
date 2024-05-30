@@ -219,6 +219,14 @@ if [[ -n ${full_node_peer} ]]; then
   ' "$CHIA_ROOT/config/config.yaml"
 fi
 
+if [[ -n ${trusted_cidrs} ]]; then
+  echo "Changing trusted cidr setting in config.yaml to value: $trusted_cidrs"
+  yq -i '
+  .wallet.trusted_cidrs = env(trusted_cidrs) |
+  .full_node.trusted_cidrs = env(trusted_cidrs)
+  ' "$CHIA_ROOT/config/config.yaml"
+fi
+
 if [[ ${log_to_file} != 'true' ]]; then
   sed -i 's/log_stdout: false/log_stdout: true/g' "$CHIA_ROOT/config/config.yaml"
 else
