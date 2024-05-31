@@ -227,6 +227,13 @@ if [[ -n ${trusted_cidrs} ]]; then
   ' "$CHIA_ROOT/config/config.yaml"
 fi
 
+if [[ -n ${xch_spam_amount} ]]; then
+  echo "Setting xch spam amount in config.yaml to value: $xch_spam_amount"
+  yq -i '
+  .wallet.xch_spam_amount = env(xch_spam_amount)
+  ' "$CHIA_ROOT/config/config.yaml"
+fi
+
 if [[ ${log_to_file} != 'true' ]]; then
   sed -i 's/log_stdout: false/log_stdout: true/g' "$CHIA_ROOT/config/config.yaml"
 else
