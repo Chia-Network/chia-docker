@@ -11,6 +11,12 @@ cd /chia-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
+if [ "$manual_config" = "true" ]; then
+    # Manual config mode skips everything below and lets you manage your config manually
+    exec "$@"
+    return
+fi
+
 # Set a few overrides if the service variable contains simulator
 if [ -z "${service##*simulator*}" ]; then
     echo "Setting up environment for simulator..."
