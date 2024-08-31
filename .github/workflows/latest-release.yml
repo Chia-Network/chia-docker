@@ -75,3 +75,11 @@ jobs:
             "BRANCH=${{ steps.latest-tag.outputs.result }}"
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - uses: Chia-Network/actions/github/glue@main
+        if: env.FULL_RELEASE == 'true'
+        with:
+          json_data: '{"chia_ref":"${{ steps.latest-tag.outputs.result }}"}'
+          glue_url: ${{ secrets.GLUE_API_URL }}
+          glue_project: "docker-new-release"
+          glue_path: "trigger"
