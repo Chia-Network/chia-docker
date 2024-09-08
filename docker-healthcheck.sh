@@ -24,6 +24,8 @@ node_check=false
 farmer_check=false
 harvester_check=false
 wallet_check=false
+timelord_check=false
+crawler_check=false
 
 # Determine which services to healthcheck based on ${service}
 # shellcheck disable=SC2154,SC2206
@@ -36,6 +38,8 @@ do
             farmer_check=true
             harvester_check=true
             wallet_check=true
+            timelord_check=true
+            crawler_check=true
         ;;
         node)
             node_check=true
@@ -56,6 +60,18 @@ do
         ;;
         farmer-only)
             farmer_check=true
+        ;;
+        timelord)
+            timelord_check=true
+        ;;
+        timelord-only)
+            timelord_check=true
+        ;;
+        crawler)
+            crawler_check=true
+        ;;
+        seeder)
+            crawler_check=true
         ;;
         wallet)
             wallet_check=true
@@ -106,6 +122,32 @@ if [[ ${harvester_check} == "true" ]]; then
     # shellcheck disable=SC2181
     if [[ "$?" -ne 0 ]]; then
         logger "$(dt) Harvester healthcheck failed"
+        exit 1
+    fi
+fi
+
+if [[ ${timelord_check} == "true" ]]; then
+    curl -X POST --fail \
+      --cert "${CHIA_ROOT}/config/ssl/timelord/private_timelord.crt" \
+      --key "${CHIA_ROOT}/config/ssl/timelord/private_timelord.key" \
+      -d '{}' -k -H "Content-Type: application/json" https://localhost:8557/healthz
+
+    # shellcheck disable=SC2181
+    if [[ "$?" -ne 0 ]]; then
+        logger "$(dt) Timelord healthcheck failed"
+        exit 1
+    fi
+fi
+
+if [[ ${crawler_check} == "true" ]]; then
+    curl -X POST --fail \
+      --cert "${CHIA_ROOT}/config/ssl/crawler/private_crawler.crt" \
+      --key "${CHIA_ROOT}/config/ssl/crawler/private_crawler.key" \
+      -d '{}' -k -H "Content-Type: application/json" https://localhost:8561/healthz
+
+    # shellcheck disable=SC2181
+    if [[ "$?" -ne 0 ]]; then
+        logger "$(dt) Crawler healthcheck failed"
         exit 1
     fi
 fi
