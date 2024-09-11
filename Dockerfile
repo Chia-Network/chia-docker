@@ -63,7 +63,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata
 
 COPY --from=yq /usr/bin/yq /usr/bin/yq
-COPY --from=chia-tools /chia-tools /chia-tools
+COPY --from=chia-tools /chia-tools /usr/bin/chia-tools
 COPY --from=chia_build /chia-blockchain /chia-blockchain
 
 ENV PATH=/chia-blockchain/venv/bin:$PATH
