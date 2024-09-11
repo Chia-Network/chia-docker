@@ -8,6 +8,20 @@ fi
 
 cd /chia-blockchain || exit 1
 
+# Install alternate version of chia if source mode is requested
+# Enables testing dev versions of chia-docker in the container even if the version is not published to the container registry
+if [[ -n ${source_ref} ]]; then
+    echo "Installing chia from source for ref: ${source_ref}"
+
+    DEBIAN_FRONTEND=noninteractive apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release sudo git
+
+    rm -rf .penv .venv venv .mypy_cache
+    git fetch origin "${source_ref}"
+    git checkout "${source_ref}"
+    /bin/sh ./install.sh -s
+fi
+
 # shellcheck disable=SC1091
 . ./activate
 
