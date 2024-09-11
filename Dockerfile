@@ -24,6 +24,8 @@ RUN echo "cloning ${BRANCH}" && \
 
 # Get yq for chia config changes
 FROM mikefarah/yq:4 AS yq
+# Get chia-tools for a new experimental chia config management strategy
+FROM ghcr.io/chia-network/chia-tools:latest AS chia-tools
 
 # IMAGE BUILD
 FROM python:3.11-slim
@@ -61,6 +63,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata
 
 COPY --from=yq /usr/bin/yq /usr/bin/yq
+COPY --from=chia-tools /chia-tools /chia-tools
 COPY --from=chia_build /chia-blockchain /chia-blockchain
 
 ENV PATH=/chia-blockchain/venv/bin:$PATH
