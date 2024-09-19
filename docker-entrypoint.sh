@@ -6,21 +6,22 @@ if [[ -n "${TZ}" ]]; then
   ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
 fi
 
-cd /chia-blockchain || exit 1
-
 # Install alternate version of chia if source mode is requested
 # Enables testing dev versions of chia-docker in the container even if the version is not published to the container registry
 if [[ -n ${source_ref} ]]; then
     echo "Installing chia from source for ref: ${source_ref}"
 
+    cd / || exit 1
     DEBIAN_FRONTEND=noninteractive apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release sudo git
 
-    rm -rf .penv .venv venv .mypy_cache
-    git fetch origin "${source_ref}"
-    git checkout "${source_ref}"
+    rm -rf /chia-blockchain
+    git clone --branch "${source_ref}" --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git /chia-blockchain
+    cd /chia-blockchain || exit 1
     /bin/sh ./install.sh -s
 fi
+
+cd /chia-blockchain || exit 1
 
 # shellcheck disable=SC1091
 . ./activate
