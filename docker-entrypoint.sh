@@ -18,7 +18,7 @@ if [[ -n ${source_ref} ]]; then
     rm -rf /chia-blockchain
     git clone --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git /chia-blockchain
     cd /chia-blockchain || exit 1
-    git checkout ${source_ref}
+    git checkout "${source_ref}"
     /bin/sh ./install.sh -s
 fi
 
