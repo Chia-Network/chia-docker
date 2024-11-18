@@ -128,7 +128,7 @@ fi
 if [[ -n ${seeder_bootstrap_peers} ]]; then
   echo "Setting seeder.bootstrap_peers to ${seeder_bootstrap_peers}"
   yq -i '
-    .seeder.bootstrap_peers = [env(seeder_bootstrap_peers)]
+    .seeder.bootstrap_peers = (env(seeder_bootstrap_peers) | split(","))
     ' "$CHIA_ROOT/config/config.yaml"
 fi
 
