@@ -253,7 +253,9 @@ if [[ -n ${full_node_peers} ]]; then
   ' "$CHIA_ROOT/config/config.yaml"
 
   for peer in "${peers_array[@]}"; do
+    # shellcheck disable=SC2155
     export full_node_peer_host=$(echo "$peer" | rev | cut -d ':' -f 2- | rev)
+    # shellcheck disable=SC2155
     export full_node_peer_port=$(echo "$peer" | awk -F: '{print $NF}')
     yq -i '
       .wallet.full_node_peers += [{"host": env(full_node_peer_host), "port": env(full_node_peer_port)}] |
