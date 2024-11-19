@@ -241,6 +241,28 @@ if [[ -n ${full_node_peer} ]]; then
   ' "$CHIA_ROOT/config/config.yaml"
 fi
 
+if [[ -n ${full_node_peers} ]]; then
+  echo "Changing full_node_peers settings in config.yaml with values: $full_node_peers"
+  IFS=',' read -r -a peers_array <<< "$full_node_peers"
+
+  # Clear existing entries in the config for full_node_peers
+  yq -i '
+    .wallet.full_node_peers = [] |
+    .timelord.full_node_peers = [] |
+    .farmer.full_node_peers = []
+  ' "$CHIA_ROOT/config/config.yaml"
+
+  for peer in "${peers_array[@]}"; do
+    export full_node_peer_host=$(echo "$peer" | rev | cut -d ':' -f 2- | rev)
+    export full_node_peer_port=$(echo "$peer" | awk -F: '{print $NF}')
+    yq -i '
+      .wallet.full_node_peers += [{"host": env(full_node_peer_host), "port": env(full_node_peer_port)}] |
+      .timelord.full_node_peers += [{"host": env(full_node_peer_host), "port": env(full_node_peer_port)}] |
+      .farmer.full_node_peers += [{"host": env(full_node_peer_host), "port": env(full_node_peer_port)}]
+    ' "$CHIA_ROOT/config/config.yaml"
+  done
+fi
+
 if [[ -n ${trusted_cidrs} ]]; then
   echo "Changing trusted cidr setting in config.yaml to value: $trusted_cidrs"
   yq -i '
