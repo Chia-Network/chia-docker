@@ -16,7 +16,7 @@ if [[ -n ${source_ref} ]]; then
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release sudo git
 
     rm -rf /chia-blockchain
-    git clone --recurse-submodules=mozilla-ca https://github.com/Chia-Network/chia-blockchain.git /chia-blockchain
+    git clone --recurse-submodules=mozilla-ca "$CHIA_REPO" /chia-blockchain
     cd /chia-blockchain || exit 1
     git checkout "${source_ref}"
     /bin/sh ./install.sh -s
