@@ -32,6 +32,8 @@ FROM python:3.11-slim
 
 EXPOSE 8555 8444
 
+# CHIA_REPO allows changing to an alternate repo if running in the mode that builds from source on startup
+ENV CHIA_REPO=https://github.com/Chia-Network/chia-blockchain.git
 ENV CHIA_ROOT=/root/.chia/mainnet
 ENV keys="generate"
 ENV service="farmer"
