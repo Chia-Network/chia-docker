@@ -9,7 +9,9 @@ fi
 # Install alternate version of chia if source mode is requested
 # Enables testing dev versions of chia-docker in the container even if the version is not published to the container registry
 if [[ -n ${source_ref} ]]; then
-    echo "Installing chia from source for ref: ${source_ref}"
+    echo "Installing chia from source:"
+    echo "  repo: ${CHIA_REPO}"
+    echo "  ref:  ${source_ref}"
 
     cd / || exit 1
     DEBIAN_FRONTEND=noninteractive apt-get update
