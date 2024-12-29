@@ -58,11 +58,11 @@ docker exec -it <container-name> venv/bin/chia keys add
 ```
 alternatively you can pass in your local keychain, if you have previously deployed chia with these keys on the host machine
 ```bash
--v ~/.local/share/python_keyring/:/root/.local/share/python_keyring/
+-v /home/username/.local/share/python_keyring/:/root/.local/share/python_keyring/
 ```
 or if you would like to persist the entire mainnet subdirectory and not touch the key directories at all
 ```bash
--v ~/.chia/mainnet:/root/.chia/mainnet -e keys="persistent"
+-v /home/username/.chia/mainnet:/root/.chia/mainnet -e keys="persistent"
 ```
 
 
@@ -70,8 +70,8 @@ or if you would like to persist the entire mainnet subdirectory and not touch th
 
 You can persist whole db and configuration, simply mount it to Host.
 ```bash
--v ~/.chia:/root/.chia \
--v ~/.chia_keys:/root/.chia_keys
+-v /home/username/.chia:/root/.chia \
+-v /home/username/.chia_keys:/root/.chia_keys
 ```
 
 ### Farmer only
