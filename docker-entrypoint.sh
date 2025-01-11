@@ -318,7 +318,7 @@ fi
 # Check if any of the env vars start with "chia." or "chia__" and if so, process the config with chia-tools
 if env | grep -qE '^chia(\.|__)'; then
     echo "Found environment variables starting with 'chia.' or 'chia__' - Running chia-tools"
-    /usr/bin/chia-tools config edit "$CHIA_ROOT/config/config.yaml"
+    /usr/bin/chia-tools config edit --config "$CHIA_ROOT/config/config.yaml"
 fi
 
 exec "$@"
