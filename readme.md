@@ -108,7 +108,7 @@ NOTE: You should only configure trusted full_nodes that you manage.
 
 At this time, only IP addresses are supported. Domains will not be added to your config as a trusted peer.
 
-See the [trusted peer documentation](https://docs.chia.net/faq/?_highlight=trusted#what-are-trusted-peers-and-how-do-i-add-them) to understand what trusted nodes are. 
+See the [trusted peer documentation](https://docs.chia.net/faq/?_highlight=trusted#what-are-trusted-peers-and-how-do-i-add-them) to understand what trusted nodes are.
 
 ### Plots
 
