@@ -96,6 +96,20 @@ To set the full_node peer's hostname and port, set the "full_node_peer" environm
 ```
 This will configure the full_node peer hostname and port for the wallet, farmer, and timelord sections of the config.yaml file.
 
+### Configure trusted full_nodes peers for wallets
+
+You can specify a list of trusted full_node peers for your wallet by setting the `trusted_peers` environment variable with a comma-separated list of address:port pairs.
+
+NOTE: You should only configure trusted full_nodes that you manage.
+
+```bash
+-e trusted_peers=="1.2.3.4:8444,4.3.2.1:8444"
+```
+
+At this time, only IP addresses are supported. Domains will not be added to your config as a trusted peer.
+
+See the [trusted peer documentation](https://docs.chia.net/faq/?_highlight=trusted#what-are-trusted-peers-and-how-do-i-add-them) to understand what trusted nodes are.
+
 ### Plots
 
 The `plots_dir` environment variable can be used to specify the directory containing the plots, it supports PATH-style colon-separated directories.
