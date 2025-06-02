@@ -4,9 +4,12 @@ FROM python:3.11-slim AS chia_build
 ARG BRANCH=latest
 ARG COMMIT=""
 
+RUN groupadd -r chia && useradd -r -g chia chia
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-        lsb-release sudo git
+        lsb-release sudo git && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /chia-blockchain
 
@@ -30,11 +33,15 @@ FROM ghcr.io/chia-network/chia-tools:latest AS chia-tools
 # IMAGE BUILD
 FROM python:3.11-slim
 
+LABEL org.opencontainers.image.source="https://github.com/Chia-Network/chia-blockchain"
+LABEL org.opencontainers.image.description="Chia Blockchain Docker Image"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
+
 EXPOSE 8555 8444
 
 # CHIA_REPO allows changing to an alternate repo if running in the mode that builds from source on startup
 ENV CHIA_REPO=https://github.com/Chia-Network/chia-blockchain.git
-ENV CHIA_ROOT=/root/.chia/mainnet
+ENV CHIA_ROOT=/home/chia/.chia/mainnet
 ENV keys="generate"
 ENV service="farmer"
 ENV plots_dir="/plots"
@@ -52,6 +59,11 @@ ENV full_node_peer=
 ENV harvester="false"
 ENV farmer="false"
 
+# Create non-root user and set up directories
+RUN groupadd -r chia && useradd -r -g chia chia && \
+    mkdir -p /home/chia/.chia && \
+    chown -R chia:chia /home/chia
+
 # Minimal list of software dependencies
 #   sudo: Needed for alternative plotter install
 #   tzdata: Setting the timezone
@@ -59,14 +71,27 @@ ENV farmer="false"
 #   netcat: Healthchecking the daemon
 #   yq: changing config settings
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat-traditional jq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+        sudo \
+        tzdata \
+        curl \
+        netcat-traditional \
+        jq \
+        ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
+    dpkg-reconfigure -f noninteractive tzdata && \
+    # Configure sudo for chia user
+    echo "chia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chia && \
+    chmod 0440 /etc/sudoers.d/chia
 
 COPY --from=yq /usr/bin/yq /usr/bin/yq
 COPY --from=chia-tools /chia-tools /usr/bin/chia-tools
 COPY --from=chia_build /chia-blockchain /chia-blockchain
+
+# Set proper permissions
+RUN chown -R chia:chia /chia-blockchain && \
+    chmod -R 755 /chia-blockchain
 
 ENV PATH=/chia-blockchain/venv/bin:$PATH
 WORKDIR /chia-blockchain
@@ -77,10 +102,19 @@ COPY docker-healthcheck.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/docker-start.sh && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
-    chmod +x /usr/local/bin/docker-healthcheck.sh
+    chmod +x /usr/local/bin/docker-healthcheck.sh && \
+    chown chia:chia /usr/local/bin/docker-start.sh && \
+    chown chia:chia /usr/local/bin/docker-entrypoint.sh && \
+    chown chia:chia /usr/local/bin/docker-healthcheck.sh
+
+# Create and set permissions for plots directory
+RUN mkdir -p /plots && \
+    chown chia:chia /plots
 
 HEALTHCHECK --interval=1m --timeout=10s --start-period=20m \
   CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
+
+USER chia
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["docker-start.sh"]
