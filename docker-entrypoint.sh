@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
+set -e
+
 # shellcheck disable=SC2154
 if [[ -n "${TZ}" ]]; then
   echo "Setting timezone to ${TZ}"
-  ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
+  sudo ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" | sudo tee /etc/timezone
+fi
+
+# Ensure CHIA_ROOT directory exists and has correct ownership
+if [[ -n "${CHIA_ROOT}" ]]; then
+  sudo mkdir -p "${CHIA_ROOT}"
+  sudo chown -R chia:chia "${CHIA_ROOT}"
 fi
 
 # Install alternate version of chia if source mode is requested
@@ -14,14 +22,15 @@ if [[ -n ${source_ref} ]]; then
     echo "  ref:  ${source_ref}"
 
     cd / || exit 1
-    DEBIAN_FRONTEND=noninteractive apt-get update
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release sudo git
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release sudo git
 
-    rm -rf /chia-blockchain
-    git clone --recurse-submodules=mozilla-ca "$CHIA_REPO" /chia-blockchain
+    sudo rm -rf /chia-blockchain
+    sudo git clone --recurse-submodules=mozilla-ca "$CHIA_REPO" /chia-blockchain
     cd /chia-blockchain || exit 1
-    git checkout "${source_ref}"
-    /bin/sh ./install.sh -s
+    sudo git checkout "${source_ref}"
+    sudo /bin/sh ./install.sh -s
+    sudo chown -R chia:chia /chia-blockchain
 fi
 
 cd /chia-blockchain || exit 1
@@ -38,14 +47,14 @@ fi
 # Set a few overrides if the service variable contains simulator
 if [ -z "${service##*simulator*}" ]; then
     echo "Setting up environment for simulator..."
-    export CHIA_ROOT=/root/.chia/simulator/main
+    export CHIA_ROOT=/home/chia/.chia/simulator/main
     export self_hostname="0.0.0.0"
 
     if [[ ${skip_sim_create} != 'true' ]]; then
-      if [ -f /root/.chia/simulator/mnemonic ]; then
-          echo "Using provided mnemonic from /root/.chia/simulator/mnemonic"
+      if [ -f /home/chia/.chia/simulator/mnemonic ]; then
+          echo "Using provided mnemonic from /home/chia/.chia/simulator/mnemonic"
           # Use awk to trim leading and trailing whitespace while preserving internal spaces
-          mnemonic=$(awk '{$1=$1};1' /root/.chia/simulator/mnemonic)
+          mnemonic=$(awk '{$1=$1};1' /home/chia/.chia/simulator/mnemonic)
       fi
 
       if [ -n "$mnemonic" ]; then  # Check if mnemonic is non-empty after trimming
@@ -55,7 +64,7 @@ if [ -z "${service##*simulator*}" ]; then
       fi
 
       chia stop -d all
-      chia keys show --show-mnemonic-seed --json | jq -r '.keys[0].mnemonic' > /root/.chia/simulator/mnemonic
+      chia keys show --show-mnemonic-seed --json | jq -r '.keys[0].mnemonic' > /home/chia/.chia/simulator/mnemonic
     fi
 fi
 
