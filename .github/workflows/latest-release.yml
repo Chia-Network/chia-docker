@@ -34,12 +34,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PAT }}
-
       # Get the most recent release from chia-blockchain and build that
       - uses: actions/github-script@v7
         id: 'latest-tag'
@@ -58,8 +52,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/chia-network/chia
-            chianetwork/chia-docker
+            ghcr.io/Starttoaster/chia
           tags: |
             type=raw,value=latest
             type=raw,value=${{ steps.latest-tag.outputs.result }}
@@ -75,10 +68,3 @@ jobs:
             "BRANCH=${{ steps.latest-tag.outputs.result }}"
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - uses: Chia-Network/actions/github/glue@main
-        with:
-          json_data: '{"chia_ref":"${{ steps.latest-tag.outputs.result }}"}'
-          glue_url: ${{ secrets.GLUE_API_URL }}
-          glue_project: "docker-new-release"
-          glue_path: "trigger"
