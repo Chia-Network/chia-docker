@@ -296,7 +296,7 @@ if [ -z "${service##*timelord*}" ]; then
 
     # install-timelord.sh relies on lsb-release for determining the cmake installation method, and git for building chiavdf
     DEBIAN_FRONTEND=noninteractive apt-get update
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y lsb-release git
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y cmake lsb-release git
 
     /bin/sh ./install-timelord.sh
 fi
