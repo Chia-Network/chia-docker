@@ -1,4 +1,4 @@
-FROM ubuntu:24.10
+FROM ubuntu:24.04
 
 EXPOSE 8555
 EXPOSE 8444
@@ -14,7 +14,11 @@ ENV full_node_port="null"
 ENV TZ="UTC"
 ARG BRANCH
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common python-is-python3 vim tzdata
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    curl jq python3 ansible tar bash ca-certificates git openssl unzip wget \
+    python3-pip sudo acl build-essential python3-dev python3-venv python3-distutils \
+    nfs-common python-is-python3 vim tzdata
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
