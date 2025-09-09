@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PAT }}
 
       # Get the most recent release from chia-blockchain and build that
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         id: 'latest-tag'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
