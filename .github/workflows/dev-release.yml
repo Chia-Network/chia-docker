@@ -38,7 +38,7 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v6.1.0
         with:
           images: |
             ghcr.io/chia-network/chia/dev
