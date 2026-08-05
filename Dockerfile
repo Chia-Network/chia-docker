@@ -47,6 +47,7 @@ ENV log_to_file="true"
 ENV healthcheck="true"
 ENV chia_args=
 ENV full_node_peer=
+ENV daemon_port_probe="false"
 
 # Deprecated legacy options
 ENV harvester="false"
@@ -74,10 +75,12 @@ WORKDIR /chia-blockchain
 COPY docker-start.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY docker-healthcheck.sh /usr/local/bin/
+COPY docker-port-probe.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/docker-start.sh && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
-    chmod +x /usr/local/bin/docker-healthcheck.sh
+    chmod +x /usr/local/bin/docker-healthcheck.sh && \
+    chmod +x /usr/local/bin/docker-port-probe.sh
 
 HEALTHCHECK --interval=1m --timeout=10s --start-period=20m \
   CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1

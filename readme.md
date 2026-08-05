@@ -176,6 +176,36 @@ To disable log file generation, use
 -e log_to_file="false"
 ```
 
+### Daemon port probe
+Diagnostic for `Failed to create the chia daemon`, disabled by default.
+
+The daemon logs `Starting Daemon Server (host:port)` before it binds its port, and
+`chia start` launches it with stderr redirected to `/dev/null`, so a failure to bind
+produces no error anywhere: the daemon exits, the port stays closed, and `chia start`
+reports `Failed to create the chia daemon` about 62 seconds later.
+
+This is possible because the default daemon port, 55400, is inside the usual Linux
+ephemeral port range, so an outbound connection can be assigned it as a source port
+and hold it. A connection that has already closed still blocks the bind while it sits
+in `TIME_WAIT`, for roughly a minute afterwards. Containers that install packages or
+clone repositories on startup open enough connections to make this a real, if rare,
+possibility, and in Kubernetes every container in the pod shares the network
+namespace, so a sidecar's connections count too.
+
+Enabling the probe reports anything holding the port before `chia start` runs, and
+keeps watching across the window in which the daemon binds. It never changes whether
+chia is started.
+```bash
+-e daemon_port_probe="true"
+```
+
+Optionally override the port to watch (defaults to `daemon_port` from `config.yaml`,
+or 55400) and how long to keep watching after `chia start` (defaults to 30 seconds).
+```bash
+-e daemon_port_probe_port="55400"
+-e daemon_port_probe_seconds="30"
+```
+
 ### Docker Compose
 
 ```yaml
