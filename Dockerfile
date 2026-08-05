@@ -47,6 +47,7 @@ ENV log_to_file="true"
 ENV healthcheck="true"
 ENV chia_args=
 ENV full_node_peer=
+ENV daemon_port_wait="120"
 
 # Deprecated legacy options
 ENV harvester="false"
