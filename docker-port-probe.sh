@@ -110,20 +110,22 @@ owner_of_inode() {
   printf 'no owner in this PID namespace (another container in the pod, or already closed)'
 }
 
-# Describe every socket using the port. Sets `findings` to one line per socket
-# and returns 0 if any of them would block a bind. Any socket on the port blocks
-# it, including TIME_WAIT ones left behind by connections that closed up to a
-# minute ago.
+# Describe every socket using the port, setting `findings` to one line each and
+# `port_is_listening` if something is listening on it. Returns 0 if any socket
+# would block a bind. Any socket on the port blocks it, including TIME_WAIT ones
+# left behind by connections that closed up to a minute ago.
 #
 # $1 selects which sockets to describe: "all", or "blocking" for just the ones
 # that would prevent a bind.
 findings=""
+port_is_listening="false"
 inspect_port() {
-  local want="$1" blocking=1 table
+  local want="$1" found_blocking="false" table
   local sl local_hex remote_hex state_hex uid inode
-  local local_port remote_port state role note is_blocking
+  local local_port remote_port state role note blocks
 
   findings=""
+  port_is_listening="false"
 
   for table in /proc/net/tcp /proc/net/tcp6; do
     [[ -r ${table} ]] || continue
@@ -144,24 +146,33 @@ inspect_port() {
       fi
 
       state="$(tcp_state "${state_hex}")"
-      is_blocking=1
+      blocks="false"
       note=""
 
       if [[ ${role} == "holds" ]]; then
+        blocks="true"
         case "${state}" in
           # A TIME_WAIT socket only yields to a new bind if that socket itself
           # set SO_REUSEADDR, which ordinary outbound clients (apt, git, curl,
           # Go's dialer) do not. Treat it as blocking; /proc does not expose the
           # flag, so this cannot be settled from here.
           TIME_WAIT) note=" [LIKELY BLOCKS a bind: TIME_WAIT yields only if this socket set SO_REUSEADDR]" ;;
-          LISTEN) note=" [already listening: something else owns this port]" ;;
+          LISTEN)
+            port_is_listening="true"
+            # A listener that appears while watching is the daemon's own bind
+            # succeeding. One already there before it starts is a problem.
+            if [[ ${want} == "blocking" ]]; then
+              blocks="false"
+            else
+              note=" [already listening: something else owns this port]"
+            fi
+            ;;
           *) note=" [WOULD BLOCK a bind on this port]" ;;
         esac
-        is_blocking=0
       fi
 
-      [[ ${is_blocking} -eq 0 ]] && blocking=0
-      [[ ${want} == "blocking" && ${is_blocking} -ne 0 ]] && continue
+      [[ ${blocks} == "true" ]] && found_blocking="true"
+      [[ ${want} == "blocking" && ${blocks} != "true" ]] && continue
 
       # Only worth walking every /proc/*/fd for a socket we are reporting.
       findings+="${role} ${port}: ${state} $(decode_address "${local_hex%%:*}"):${local_port}"
@@ -170,7 +181,7 @@ inspect_port() {
     done < "${table}"
   done
 
-  return ${blocking}
+  [[ ${found_blocking} == "true" ]]
 }
 
 log_findings() {
@@ -206,6 +217,13 @@ while ((SECONDS < deadline)); do
   else
     previous=""
   fi
+
+  # Once the port is being listened on there is nothing left to catch.
+  if [[ ${port_is_listening} == "true" ]]; then
+    log "port ${port} reached LISTEN after ${hits} sample(s) saw a socket that would block a bind"
+    exit 0
+  fi
+
   sleep "${interval}"
 done
-log "finished watching port ${port}: ${hits} sample(s) saw a socket that would block a bind"
+log "finished watching port ${port}: ${hits} sample(s) saw a socket that would block a bind, and it never reached LISTEN"

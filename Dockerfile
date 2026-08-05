@@ -48,6 +48,7 @@ ENV healthcheck="true"
 ENV chia_args=
 ENV full_node_peer=
 ENV daemon_port_probe="false"
+ENV daemon_stderr_capture="false"
 
 # Deprecated legacy options
 ENV harvester="false"

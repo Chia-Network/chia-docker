@@ -199,11 +199,30 @@ chia is started.
 -e daemon_port_probe="true"
 ```
 
-Optionally override the port to watch (defaults to `daemon_port` from `config.yaml`,
-or 55400) and how long to keep watching after `chia start` (defaults to 30 seconds).
+Optionally override how long to keep watching after `chia start` (defaults to 30
+seconds).
 ```bash
--e daemon_port_probe_port="55400"
 -e daemon_port_probe_seconds="30"
+```
+
+### Daemon output capture
+Companion diagnostic to the port probe, also disabled by default.
+
+Because `chia start` discards the daemon's output, the probe can show that the port
+was taken but not what the daemon made of it. Enabling this starts `run_daemon` with
+its stdout and stderr kept, waits for it to listen, and copies anything it wrote into
+the container log, so a failure to bind shows up as the actual error, for example
+`OSError: [Errno 98] Address already in use`. `chia start` then finds a daemon already
+running and proceeds as usual; if the daemon did die, `chia start` behaves exactly as
+it does today.
+```bash
+-e daemon_stderr_capture="true"
+```
+
+Both diagnostics default to the `daemon_port` in `config.yaml`, or 55400. To override
+the port they use:
+```bash
+-e daemon_diagnostics_port="55400"
 ```
 
 ### Docker Compose
