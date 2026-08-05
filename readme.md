@@ -349,7 +349,10 @@ Mounts the simulator root to the provided local path to make the test plots and 
 
 ## Daemon port wait
 
-The daemon component of chia defaults to a port within Linux's default ephemeral port range. This means it can be held by a process making outbound connections as the container starts up, for example if you elect to re-install chia from source at startup. A connection that has already closed still holds it, for the 60 seconds the Linux kernel keeps it in `TIME_WAIT`. The daemon cannot bind in that case and exits, and because `chia start` discards its stderr nothing reports why, leaving a container that is up but serving nothing. In this rare event the container waits for the port to clear before starting chia, up to a limit of 120 seconds. This is enabled by default.
+The daemon component of chia defaults to a port within Linux's default ephemeral port range. This means it can be held by a process making outbound connections as the container starts up,
+for example if you elect to re-install chia from source at startup. A connection that has already closed still holds it, for the 60 seconds the Linux kernel keeps it in `TIME_WAIT`.
+The daemon cannot bind in that case and exits, and because `chia start` discards its stderr nothing reports why, leaving a container that is up but serving nothing.
+In this rare event the container waits for the port to clear before starting chia, up to a limit of 120 seconds. This is enabled by default.
 
 Waiting normally costs nothing, because the port is free and checking it takes a single pass over `/proc`. Chia is always started afterwards, whether or not the port cleared.
 
