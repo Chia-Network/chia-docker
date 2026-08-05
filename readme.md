@@ -176,39 +176,6 @@ To disable log file generation, use
 -e log_to_file="false"
 ```
 
-### Daemon port wait
-Before starting chia, the container waits for the daemon port to be free, for up to
-120 seconds by default.
-
-The daemon port, 55400 by default, is inside the usual Linux ephemeral port range,
-so an outbound connection can be assigned it as a source port and hold it. The
-daemon does not survive that: it exits, and because `chia start` runs it with stderr
-redirected to `/dev/null` the bind error is never reported, so the container stays up
-with nothing serving and no indication why. A connection that has already closed
-keeps the port for roughly the next minute while it sits in `TIME_WAIT`.
-
-Containers that install packages or clone repositories on startup open enough
-connections for this to happen, and in Kubernetes every container in the pod shares
-the network namespace, so a sidecar's connections count too.
-
-Waiting normally costs nothing, because the port is free and the check is a single
-read of `/proc`. Chia is always started afterwards, whether or not the port cleared.
-To change the budget, or to disable the wait with 0:
-```bash
--e daemon_port_wait="120"
-```
-
-On Kubernetes it is better to stop the collision happening at all, by reserving the
-port so the kernel never assigns it to an outbound connection. This has been a safe
-sysctl since Kubernetes 1.27, and is rejected on pods using host networking:
-```yaml
-spec:
-  securityContext:
-    sysctls:
-      - name: net.ipv4.ip_local_reserved_ports
-        value: "55400"
-```
-
 ### Docker Compose
 
 ```yaml
@@ -379,3 +346,23 @@ See [Configure Probes](https://kubernetes.io/docs/tasks/configure-pod-container/
 `docker run -e service=simulator -v /local/path/to/simulator:/root/.chia/simulator ghcr.io/chia-network/chia:latest`
 
 Mounts the simulator root to the provided local path to make the test plots and the mnemonic persistent. Mnemonic will be available at /local/path/to/simulator/mnemonic
+
+## Daemon port wait
+
+The daemon component of chia defaults to a port within Linux's default ephemeral port range. This means it can be held by a process making outbound connections as the container starts up, for example if you elect to re-install chia from source at startup. A connection that has already closed still holds it, for the 60 seconds the Linux kernel keeps it in `TIME_WAIT`. The daemon cannot bind in that case and exits, and because `chia start` discards its stderr nothing reports why, leaving a container that is up but serving nothing. In this rare event the container waits for the port to clear before starting chia, up to a limit of 120 seconds. This is enabled by default.
+
+Waiting normally costs nothing, because the port is free and checking it takes a single pass over `/proc`. Chia is always started afterwards, whether or not the port cleared.
+
+To change the budget, or to disable the wait with 0:
+```bash
+-e daemon_port_wait="120"
+```
+
+On Kubernetes it is better to stop the collision happening at all, by reserving the port so the kernel never assigns it to an outbound connection. This has been a safe sysctl since Kubernetes 1.27, and is rejected on pods using host networking:
+```yaml
+spec:
+  securityContext:
+    sysctls:
+      - name: net.ipv4.ip_local_reserved_ports
+        value: "55400"
+```
