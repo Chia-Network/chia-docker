@@ -6,7 +6,8 @@ ARG COMMIT=""
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-        lsb-release sudo git
+        lsb-release sudo git && \
+    python -m pip install --no-cache-dir --upgrade 'pip>=26.2.2'
 
 WORKDIR /chia-blockchain
 
@@ -59,9 +60,11 @@ ENV farmer="false"
 #   curl: Health-checks
 #   netcat: Healthchecking the daemon
 #   yq: changing config settings
+#   ca-certificates: Current system CA bundle
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat-traditional jq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y sudo tzdata curl netcat-traditional jq ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
+    python -m pip install --no-cache-dir --upgrade 'pip>=26.2.2' && \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
 
