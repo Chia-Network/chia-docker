@@ -89,4 +89,7 @@ if [[ ${log_to_file} == 'true' ]]; then
   tail -F "$CHIA_ROOT/log/debug.log" &
 fi
 
-tail -F /dev/null
+# Run tail in the background and wait: bash defers a trap while a foreground
+# command runs, so a foreground `tail -F /dev/null` never lets the trap fire.
+tail -F /dev/null &
+wait $!
